@@ -6,4 +6,8 @@ public class Record {
     public Record(String description) {
         this.description = description;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
