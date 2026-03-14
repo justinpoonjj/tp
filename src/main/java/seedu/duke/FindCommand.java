@@ -1,5 +1,7 @@
 package seedu.duke;
 
+import seedu.duke.RecordType.Record;
+
 public class FindCommand extends Command {
     private final String keyword;
     private final Ui ui;

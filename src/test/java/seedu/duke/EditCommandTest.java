@@ -4,12 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.YearMonth;
+import seedu.duke.RecordType.*;
+
 public class EditCommandTest {
 
     @Test
     public void execute_validIndex_recordDescriptionUpdated() {
         RecordList recordList = new RecordList();
-        Record record = new Record("Old description");
+        seedu.duke.RecordType.Record record = new seedu.duke.RecordType.Record("Old description", "title", "role", "tech", "2019-10", 2019-02);
         recordList.add(record);
 
         EditCommand editCommand = new EditCommand(0, "New description");
@@ -21,8 +24,8 @@ public class EditCommandTest {
     @Test
     public void execute_validIndexOnlyTargetRecordUpdated() {
         RecordList recordList = new RecordList();
-        Record firstRecord = new Record("First record");
-        Record secondRecord = new Record("Second record");
+        seedu.duke.RecordType.Record firstRecord = new seedu.duke.RecordType.Record("First record");
+        seedu.duke.RecordType.Record secondRecord = new seedu.duke.RecordType.Record("Second record");
         recordList.add(firstRecord);
         recordList.add(secondRecord);
 

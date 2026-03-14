@@ -3,11 +3,13 @@ package seedu.duke;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import seedu.duke.RecordType.Record;
+
 public class RecordListTest {
     @Test
     public void addRecord_recordAdded_sizeIncreases() {
         RecordList recordList = new RecordList();
-        Record record = new Record("Test record");
+        seedu.duke.RecordType.Record record = new Record("Test record");
 
         recordList.add(record);
 

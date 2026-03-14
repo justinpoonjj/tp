@@ -8,6 +8,8 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import seedu.duke.RecordType.Record;
+
 public class FindCommandTest {
     private final PrintStream originalOut = System.out;
 
@@ -22,9 +24,9 @@ public class FindCommandTest {
         System.setOut(new PrintStream(outputStream));
 
         RecordList recordList = new RecordList();
-        recordList.add(new Record("Java project"));
-        recordList.add(new Record("Python internship"));
-        recordList.add(new Record("Full stack Java app"));
+        recordList.add(new seedu.duke.RecordType.Record("Java project"));
+        recordList.add(new seedu.duke.RecordType.Record("Python internship"));
+        recordList.add(new seedu.duke.RecordType.Record("Full stack Java app"));
 
         FindCommand findCommand = new FindCommand("java");
         findCommand.execute(recordList);
@@ -45,8 +47,8 @@ public class FindCommandTest {
         System.setOut(new PrintStream(outputStream));
 
         RecordList recordList = new RecordList();
-        recordList.add(new Record("Java project"));
-        recordList.add(new Record("Python internship"));
+        recordList.add(new seedu.duke.RecordType.Record("Java project"));
+        recordList.add(new seedu.duke.RecordType.Record("Python internship"));
 
         FindCommand findCommand = new FindCommand("golang");
         findCommand.execute(recordList);
