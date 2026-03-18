@@ -1,5 +1,7 @@
 package seedu.duke;
 
+import seedu.duke.RecordType.Record;
+
 public class EditCommand extends Command {
     private final int index;
     private final String newDescription;
@@ -22,6 +24,7 @@ public class EditCommand extends Command {
 
         Record record = list.getRecord(index);
         record.setDescription(newDescription);
+
 
         ui.showLine();
         System.out.println("Record " + (index + 1) + " has been updated.");

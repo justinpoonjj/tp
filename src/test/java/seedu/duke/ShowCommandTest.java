@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.YearMonth;
+
+import seedu.duke.RecordType.Record;
 
 public class ShowCommandTest {
 
@@ -12,7 +15,14 @@ public class ShowCommandTest {
     void printRecord_validIndex_printsCorrectRecord() {
 
         RecordList records = new RecordList();
-        records.add(new Record("Test Record"));
+        Record record = new Record(
+                "Resumake CLI",
+                "Developer",
+                "Java",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        );
+        records.add(record);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;

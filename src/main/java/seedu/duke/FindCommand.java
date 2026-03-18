@@ -1,5 +1,7 @@
 package seedu.duke;
 
+import seedu.duke.RecordType.Record;
+
 public class FindCommand extends Command {
     private final String keyword;
     private final Ui ui;
@@ -23,7 +25,7 @@ public class FindCommand extends Command {
 
         for (Record record : list) {
             if (record.containsKeyword(keyword)) {
-                System.out.println(displayIndex + ". " + record);
+                System.out.println(displayIndex + ". " + record.getTitle());
                 displayIndex++;
                 hasMatch = true;
             }

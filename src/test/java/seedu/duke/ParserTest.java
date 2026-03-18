@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import seedu.duke.RecordType.*;
+import seedu.duke.RecordType.Record;
+
 public class ParserTest {
     @Test
     public void parse_byeInput_returnsExitCommand() {
@@ -45,5 +48,53 @@ public class ParserTest {
     public void parse_unknownCommandInput_returnsNull() {
         Command command = Parser.parse("hello");
         assertNull(command);
+    }
+
+    @Test
+    public void parse_validProjectInput() {
+        Command command = Parser.parse(
+                "project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03"
+        );
+
+        assertInstanceOf(AddCommand.class, command);
+
+        RecordList list = new RecordList();
+        command.execute(list);
+
+        Record record = list.getRecord(0);
+        assertEquals("Capo CLI", record.getTitle());
+        assertEquals("P", record.getRecordType());
+    }
+
+    @Test
+    public void parse_validExperienceInput() {
+        Command command = Parser.parse(
+                "experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02"
+        );
+
+        assertInstanceOf(AddCommand.class, command);
+
+        RecordList list = new RecordList();
+        command.execute(list);
+
+        Record record = list.getRecord(0);
+        assertEquals("Google", record.getTitle());
+        assertEquals("E", record.getRecordType());
+    }
+
+    @Test
+    public void parse_validCcaInput() {
+        Command command = Parser.parse(
+                "cca Tennis /role Captain /tech nil /from 2025-01 /to 2026-01"
+        );
+
+        assertInstanceOf(AddCommand.class, command);
+
+        RecordList list = new RecordList();
+        command.execute(list);
+
+        Record record = list.getRecord(0);
+        assertEquals("Tennis", record.getTitle());
+        assertEquals("C", record.getRecordType());
     }
 }
