@@ -2,13 +2,31 @@ package seedu.duke;
 
 import seedu.duke.recordtype.Record;
 
+import java.util.logging.Logger;
+
 public class FindCommand extends Command {
+    private static final Logger logger = Logger.getLogger(FindCommand.class.getName());
+
     private final String keyword;
     private final Ui ui;
 
     public FindCommand(String keyword) {
-        this.keyword = keyword.trim();
+        if (keyword == null) {
+            throw new IllegalArgumentException("Keyword cannot be null");
+        }
+
+        String trimmedKeyword = keyword.trim();
+        if (trimmedKeyword.isEmpty()) {
+            throw new IllegalArgumentException("Keyword cannot be blank");
+        }
+
+        this.keyword = trimmedKeyword;
         this.ui = new Ui();
+
+        assert this.ui != null : "Ui should be initialized";
+        assert this.keyword != null && !this.keyword.isBlank() : "Keyword should not be blank";
+
+        logger.info("FindCommand created with keyword: " + this.keyword);
     }
 
     public String getKeyword() {
@@ -17,24 +35,52 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(RecordList list) {
-        ui.showLine();
-        System.out.println("Matching records:");
+        logger.info("Executing FindCommand with keyword: " + keyword);
 
-        boolean hasMatch = false;
-        int displayIndex = 1;
-
-        for (Record record : list) {
-            if (record.containsKeyword(keyword)) {
-                System.out.println(displayIndex + ". " + record);
-                displayIndex++;
-                hasMatch = true;
+        try {
+            if (list == null) {
+                throw new IllegalArgumentException("RecordList cannot be null");
             }
-        }
 
-        if (!hasMatch) {
-            System.out.println("No matching records found for keyword: " + keyword);
-        }
+            assert list != null : "RecordList passed to FindCommand should not be null";
 
-        ui.showLine();
+            ui.showLine();
+            System.out.println("Matching records:");
+
+            boolean hasMatch = false;
+            int displayIndex = 1;
+
+            for (Record record : list) {
+                assert record != null : "Record in RecordList should not be null";
+
+                if (record == null) {
+                    logger.warning("Encountered null record while searching");
+                    continue;
+                }
+
+                logger.fine("Checking record: " + record.getTitle());
+
+                if (record.containsKeyword(keyword)) {
+                    logger.info("Match found for keyword \"" + keyword + "\": " + record.getTitle());
+                    System.out.println(displayIndex + ". " + record);
+                    displayIndex++;
+                    hasMatch = true;
+                }
+            }
+
+            if (!hasMatch) {
+                logger.info("No matches found for keyword: " + keyword);
+                System.out.println("No matching records found for keyword: " + keyword);
+            }
+
+            ui.showLine();
+            logger.info("FindCommand completed successfully for keyword: " + keyword);
+
+        } catch (IllegalArgumentException e) {
+            logger.warning("FindCommand failed: " + e.getMessage());
+            ui.showLine();
+            ui.showError(e.getMessage());
+            ui.showLine();
+        }
     }
 }
