@@ -60,7 +60,8 @@ public class FindCommandTest {
         findCommand.execute(recordList);
 
         String lineSeparator = System.lineSeparator();
-        String expectedOutput = "--------------------" + lineSeparator
+        String expectedOutput =
+                "--------------------" + lineSeparator
                 + "Matching records:" + lineSeparator
                 + "1. Java project" + lineSeparator
                 + "2. Full stack Java app" + lineSeparator
