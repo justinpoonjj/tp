@@ -20,7 +20,13 @@ public class Record {
     }
 
     public boolean containsKeyword(String keyword) {
-        return title.toLowerCase().contains(keyword.toLowerCase());
+        String lowerKeyword = keyword.toLowerCase();
+
+        return title.toLowerCase().contains(lowerKeyword)
+                || role.toLowerCase().contains(lowerKeyword)
+                || tech.toLowerCase().contains(lowerKeyword)
+                || from.toString().toLowerCase().contains(lowerKeyword)
+                || to.toString().toLowerCase().contains(lowerKeyword);
     }
 
     public String getTitle() {
