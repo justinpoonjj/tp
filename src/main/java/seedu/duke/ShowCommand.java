@@ -1,6 +1,5 @@
 package seedu.duke;
 
-import seedu.duke.recordtype.Record;
 import java.util.logging.Logger;
 
 public class ShowCommand extends Command{
