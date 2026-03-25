@@ -72,6 +72,23 @@ public class Record {
         bullets.add(bullet);
     }
 
+    public void moveBullet(int fromIndex, int toIndex) {
+        if (fromIndex < 0 || fromIndex >= bullets.size()) {
+            throw new IndexOutOfBoundsException("Source bullet index is out of range.");
+        }
+
+        if (toIndex < 0 || toIndex >= bullets.size()) {
+            throw new IndexOutOfBoundsException("Target bullet index is out of range.");
+        }
+
+        if (fromIndex == toIndex) {
+            return;
+        }
+
+        String bulletToMove = bullets.remove(fromIndex);
+        bullets.add(toIndex, bulletToMove);
+    }
+
     public ArrayList<String> getBullets() {
         return bullets;
     }
