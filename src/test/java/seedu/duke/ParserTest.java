@@ -104,7 +104,7 @@ public class ParserTest {
 
     @Test
     public void parse_bulletCommand() {
-        Command command = Parser.parse("bullet 2 / did frontend UI");
+        Command command = Parser.parse("addbullet 2 / did frontend UI");
 
         assertInstanceOf(AddBulletCommand.class, command);
 
