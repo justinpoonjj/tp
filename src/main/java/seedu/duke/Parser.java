@@ -6,6 +6,7 @@ import java.time.YearMonth;
 import java.util.logging.Logger;
 
 import seedu.duke.Commands.AddBulletCommand;
+import seedu.duke.Commands.MoveBulletCommand;
 import seedu.duke.Commands.AddCommand;
 import seedu.duke.Commands.Command;
 import seedu.duke.Commands.DeleteCommand;
@@ -135,6 +136,27 @@ public class Parser {
                 } catch (NumberFormatException e) {
                     return null;
                 }
+
+        case "movebullet":
+            if (split.length < 2) {
+                return null;
+            }
+            logger.info("Move bullet command detected");
+
+            String[] moveParts = split[1].trim().split("\\s+");
+            if (moveParts.length != 3) {
+                return null;
+            }
+
+            try {
+                int recordIndex = Integer.parseInt(moveParts[0]) - 1;
+                int fromBulletIndex = Integer.parseInt(moveParts[1]) - 1;
+                int toBulletIndex = Integer.parseInt(moveParts[2]) - 1;
+
+                return new MoveBulletCommand(recordIndex, fromBulletIndex, toBulletIndex);
+            } catch (NumberFormatException e) {
+                return null;
+            }
 
         default:
             logger.warning("Unknown command: " + keyword);

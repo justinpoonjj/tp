@@ -1,1 +1,6 @@
 project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03
+experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02
+experience Shopee /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02
+experience Shopee /role Marketing Intern /tech Excel /from 2025-07 /to 2026-10
+cca Badminton /role Captain /tech Google Slides /from 2026-01 /to 2026-05
+cca Basketball /role Vice-Captain /tech Microsoft Office /from 2025-10 /to 2026-01
