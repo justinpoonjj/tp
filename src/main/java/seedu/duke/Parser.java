@@ -97,7 +97,7 @@ public class Parser {
                 return null;
             }
 
-        case "bullet":
+        case "addbullet":
             if (split.length < 2) {
                 return null;
             }
