@@ -1,15 +1,28 @@
-package seedu.duke;
+package seedu.duke.Commands;
 
+import seedu.duke.RecordList;
+import seedu.duke.Ui;
 import seedu.duke.recordtype.Record;
 
 import java.util.logging.Logger;
 
+/**
+ * Represents a command that searches for records containing a given keyword.
+ * The search is performed across all records in the RecordList.
+ * Matching records are printed to the user.
+ */
 public class FindCommand extends Command {
     private static final Logger logger = Logger.getLogger(FindCommand.class.getName());
 
     private final String keyword;
     private final Ui ui;
 
+    /**
+     * Creates a FindCommand with the specified keyword.
+     *
+     * @param keyword The keyword used to search for matching records.
+     * @throws IllegalArgumentException if the keyword is null or blank.
+     */
     public FindCommand(String keyword) {
         if (keyword == null) {
             throw new IllegalArgumentException("Keyword cannot be null");
@@ -33,6 +46,12 @@ public class FindCommand extends Command {
         return keyword;
     }
 
+    /**
+     * Executes the find operation by searching for records that contain
+     * the specified keyword and printing the results.
+     *
+     * @param list The RecordList to search from.
+     */
     @Override
     public void execute(RecordList list) {
         logger.info("Executing FindCommand with keyword: " + keyword);
@@ -45,7 +64,7 @@ public class FindCommand extends Command {
             assert list != null : "RecordList passed to FindCommand should not be null";
 
             ui.showLine();
-            System.out.println("Matching records:");
+            ui.showMessage("Matching records:");
 
             boolean hasMatch = false;
             int displayIndex = 1;
@@ -62,7 +81,7 @@ public class FindCommand extends Command {
 
                 if (record.containsKeyword(keyword)) {
                     logger.info("Match found for keyword \"" + keyword + "\": " + record.getTitle());
-                    System.out.println(displayIndex + ". " + record);
+                    ui.showMessage(displayIndex + ". " + record);
                     displayIndex++;
                     hasMatch = true;
                 }
@@ -70,7 +89,7 @@ public class FindCommand extends Command {
 
             if (!hasMatch) {
                 logger.info("No matches found for keyword: " + keyword);
-                System.out.println("No matching records found for keyword: " + keyword);
+                ui.showMessage("No matching records found for keyword: " + keyword);
             }
 
             ui.showLine();

@@ -1,6 +1,7 @@
 package seedu.duke.recordtype;
 
 import java.time.YearMonth;
+import java.util.ArrayList;
 
 public class Record {
     protected String title;
@@ -9,6 +10,7 @@ public class Record {
     protected YearMonth from;
     protected YearMonth to;
     protected String recordType;
+    protected ArrayList<String> bullets;
 
     public Record(String title, String role, String tech, YearMonth from, YearMonth to) {
         assert title != null && !title.isEmpty()
@@ -22,6 +24,7 @@ public class Record {
         this.tech = tech;
         this.from = from;
         this.to = to;
+        this.bullets = new ArrayList<>();
         recordType = "R";
     }
 
@@ -56,11 +59,61 @@ public class Record {
     }
 
     public void setDescription(String description) {
-        this.title = description;
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Title cannot be blank.");
+        }
+        this.title = description.trim();
+    }
+
+    public void setFrom(YearMonth from) {
+        if (from == null) {
+            throw new IllegalArgumentException("Start date cannot be null.");
+        }
+        if (this.to != null && from.isAfter(this.to)) {
+            throw new IllegalArgumentException("Start date cannot be after end date.");
+        }
+        this.from = from;
+    }
+
+    public void setTo(YearMonth to) {
+        if (to == null) {
+            throw new IllegalArgumentException("End date cannot be null.");
+        }
+        if (this.from != null && to.isBefore(this.from)) {
+            throw new IllegalArgumentException("End date cannot be before start date.");
+        }
+        this.to = to;
     }
 
     public String getRecordType() {
         return recordType;
+    }
+
+    public void addBullet(String bullet) {
+        assert bullet != null && !bullet.isBlank()
+                : "Bullet must not be null or blank";
+        bullets.add(bullet);
+    }
+
+    public void moveBullet(int fromIndex, int toIndex) {
+        if (fromIndex < 0 || fromIndex >= bullets.size()) {
+            throw new IndexOutOfBoundsException("Source bullet index is out of range.");
+        }
+
+        if (toIndex < 0 || toIndex >= bullets.size()) {
+            throw new IndexOutOfBoundsException("Target bullet index is out of range.");
+        }
+
+        if (fromIndex == toIndex) {
+            return;
+        }
+
+        String bulletToMove = bullets.remove(fromIndex);
+        bullets.add(toIndex, bulletToMove);
+    }
+
+    public ArrayList<String> getBullets() {
+        return bullets;
     }
 
     @Override

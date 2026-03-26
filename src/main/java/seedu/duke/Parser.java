@@ -5,6 +5,16 @@ import java.time.YearMonth;
 
 import java.util.logging.Logger;
 
+import seedu.duke.Commands.AddBulletCommand;
+import seedu.duke.Commands.MoveBulletCommand;
+import seedu.duke.Commands.AddCommand;
+import seedu.duke.Commands.Command;
+import seedu.duke.Commands.DeleteCommand;
+import seedu.duke.Commands.ExitCommand;
+import seedu.duke.Commands.FindCommand;
+import seedu.duke.Commands.ListCommand;
+import seedu.duke.Commands.ShowCommand;
+import seedu.duke.Commands.EditCommand;
 import seedu.duke.recordtype.Cca;
 import seedu.duke.recordtype.Experience;
 import seedu.duke.recordtype.Project;
@@ -13,6 +23,69 @@ import seedu.duke.recordtype.Record;
 public class Parser {
 
     private static final Logger logger = Logger.getLogger(Parser.class.getName());
+
+    private static Command parseEditCommand(String args) {
+        String trimmedArgs = args.trim();
+        String[] editParts = trimmedArgs.split("\\s+", 2);
+
+        if (editParts.length < 2) {
+            return null;
+        }
+
+        try {
+            int index = Integer.parseInt(editParts[0]) - 1;
+            String fields = editParts[1].trim();
+
+            int fromIndex = fields.indexOf("/from");
+            int toIndex = fields.indexOf("/to");
+
+            String newDescription = null;
+            YearMonth newFrom = null;
+            YearMonth newTo = null;
+
+            int firstFlagIndex = -1;
+            if (fromIndex != -1 && toIndex != -1) {
+                firstFlagIndex = Math.min(fromIndex, toIndex);
+            } else if (fromIndex != -1) {
+                firstFlagIndex = fromIndex;
+            } else if (toIndex != -1) {
+                firstFlagIndex = toIndex;
+            }
+
+            if (firstFlagIndex == -1) {
+                newDescription = fields.trim();
+            } else {
+                String titlePart = fields.substring(0, firstFlagIndex).trim();
+                if (!titlePart.isEmpty()) {
+                    newDescription = titlePart;
+                }
+            }
+
+            if (fromIndex != -1 && toIndex != -1) {
+                if (fromIndex < toIndex) {
+                    String fromPart = fields.substring(fromIndex + 5, toIndex).trim();
+                    String toPart = fields.substring(toIndex + 3).trim();
+                    newFrom = parseYearMonth(fromPart, "from");
+                    newTo = parseYearMonth(toPart, "to");
+                } else {
+                    String toPart = fields.substring(toIndex + 3, fromIndex).trim();
+                    String fromPart = fields.substring(fromIndex + 5).trim();
+                    newTo = parseYearMonth(toPart, "to");
+                    newFrom = parseYearMonth(fromPart, "from");
+                }
+            } else if (fromIndex != -1) {
+                String fromPart = fields.substring(fromIndex + 5).trim();
+                newFrom = parseYearMonth(fromPart, "from");
+            } else if (toIndex != -1) {
+                String toPart = fields.substring(toIndex + 3).trim();
+                newTo = parseYearMonth(toPart, "to");
+            }
+
+            return new EditCommand(index, newDescription, newFrom, newTo);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
 
     public static Command parse(String userInput) {
         logger.info("Parsing input: " + userInput);
@@ -89,6 +162,55 @@ public class Parser {
                 return null;
             }
 
+        case "addbullet":
+            if (split.length < 2) {
+                return null;
+            }
+            logger.info("Bullet command detected");
+            String[] parts = split[1].split("\\s+",2);
+            if (parts.length < 2) {
+                return null;
+            }
+            try{
+                int index = Integer.parseInt(parts[0]) - 1;
+                String bulletPart = parts[1].trim();
+                if (!bulletPart.startsWith("/")) {
+                    throw new IllegalArgumentException("Bullet must start with /");
+                }
+                String bullet = bulletPart.substring(1).trim();
+
+                return new AddBulletCommand(index,bullet);
+            }catch (NumberFormatException e) {
+                return null;
+            }
+
+            case "edit":
+                if (split.length < 2) {
+                    return null;
+                }
+                return parseEditCommand(split[1]);
+
+        case "movebullet":
+            if (split.length < 2) {
+                return null;
+            }
+            logger.info("Move bullet command detected");
+
+            String[] moveParts = split[1].trim().split("\\s+");
+            if (moveParts.length != 3) {
+                return null;
+            }
+
+            try {
+                int recordIndex = Integer.parseInt(moveParts[0]) - 1;
+                int fromBulletIndex = Integer.parseInt(moveParts[1]) - 1;
+                int toBulletIndex = Integer.parseInt(moveParts[2]) - 1;
+
+                return new MoveBulletCommand(recordIndex, fromBulletIndex, toBulletIndex);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+
         default:
             logger.warning("Unknown command: " + keyword);
             return null;
@@ -155,7 +277,7 @@ public class Parser {
         try {
             return YearMonth.parse(input.trim());
         } catch (DateTimeException e) {
-            throw new IllegalArgumentException(fieldName + "date Must be in yyyy-MM format");
+            throw new IllegalArgumentException(fieldName + "date must be in yyyy-MM format");
         }
     }
 }

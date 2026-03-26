@@ -6,6 +6,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import seedu.duke.Commands.Command;
+
 public class Resumake {
     private RecordList list;
     private final Ui ui;
@@ -17,7 +19,7 @@ public class Resumake {
         list = new RecordList();
         try {
             list = storage.loadFromFile(Storage.getFilepath());
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             ui.showLoadingError();
         }
     }
@@ -25,20 +27,27 @@ public class Resumake {
     public void run() {
         ui.greetings();
         boolean isExit = false;
+
         while (!isExit) {
             String fullCommand = ui.readCommand();
-            Command c = Parser.parse(fullCommand);
-            if (c == null) {
-                ui.showError("Unknown command.");
-                continue;
-            }
-            c.execute(list);
             try {
-                storage.saveToFile(list);
-            } catch (IOException e) {
-                ui.showLoadingError();
+                Command c = Parser.parse(fullCommand);
+                if (c == null) {
+                    ui.showError("Unknown command.");
+                    continue;
+                }
+                c.execute(list);
+                try {
+                    storage.saveToFile(list);
+                } catch (IOException e) {
+                    ui.showError("Failed to save records to file.");
+                }
+                isExit = c.isExit();
+            } catch (IllegalArgumentException e) {
+                ui.showError(e.getMessage());
+            } catch (Exception e) {
+                ui.showError("An unexpected error occurred while processing your command.");
             }
-            isExit = c.isExit();
         }
     }
 

@@ -13,6 +13,10 @@ public class Ui {
         System.out.println("--------------------");
     }
 
+    public void showMessage(String message) {
+        System.out.println(message);
+    }
+
     public void greetings() {
         showLine();
         System.out.println("Welcome to Resumake");
@@ -24,6 +28,8 @@ public class Ui {
     }
 
     public void showLoadingError() {
+        showLine();
+        showError("Failed to load records from file.");
         showLine();
     }
 
