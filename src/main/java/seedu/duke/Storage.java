@@ -13,14 +13,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.logging.Logger;
-import seedu.duke.exceptions.StorageException;
+import seedu.duke.exceptions.ResumakeException;
 
 public class Storage {
     private static final Logger logger = Logger.getLogger(Storage.class.getName());
     private static final String filepath = "records.txt";
     private final Ui ui = new Ui();
 
-    public void saveToFile(RecordList list) {
+    public void saveToFile(RecordList list) throws ResumakeException {
         logger.info("Saving records to file: " + filepath);
         Path path = Paths.get(filepath);
 
@@ -56,11 +56,11 @@ public class Storage {
             ui.showMessage("Records saved to file.");
         } catch (IOException e) {
             logger.severe("Failed to save records: " + e.getMessage());
-            throw new StorageException("Failed to save records to file.", e);
+            throw new ResumakeException("Failed to save records to file.");
         }
     }
 
-    public RecordList loadFromFile(String filepath) {
+    public RecordList loadFromFile(String filepath) throws ResumakeException {
         logger.info("Loading records from file: " + filepath);
         assert filepath != null && !filepath.isBlank() : "filepath should not be blank";
         File file = new File(filepath);
@@ -74,7 +74,7 @@ public class Storage {
                 logger.fine("Created storage directory: " + directory);
             } catch (IOException e) {
                 logger.severe("Error creating the directory: " + e.getMessage());
-                throw new StorageException("Error creating the directory.", e);
+                throw new ResumakeException("Error creating the directory.");
             }
         }
 
@@ -84,7 +84,7 @@ public class Storage {
                 logger.fine("Created storage file: " + filepath);
             } catch (IOException e) {
                 logger.severe("Error creating the file: " + e.getMessage());
-                throw new StorageException("Error creating the file.", e);
+                throw new ResumakeException("Error creating the file.");
             }
         }
         assert Files.exists(path) : "file should exist after path creation";
@@ -113,7 +113,7 @@ public class Storage {
             sc.close();
         } catch (IOException e) {
             logger.severe("Failed to load records: " + e.getMessage());
-            throw new StorageException("Failed to load records from file.", e);
+            throw new ResumakeException("Failed to load records from file.");
         }
         logger.info("Records loaded successfully");
         ui.showMessage("Loaded records from file.");

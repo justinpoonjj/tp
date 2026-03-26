@@ -56,7 +56,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_validProjectInput() {
+    public void parse_validProjectInput() throws Exception {
         Command command = Parser.parse(
                 "project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03"
         );
@@ -72,7 +72,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_validExperienceInput() {
+    public void parse_validExperienceInput() throws Exception {
         Command command = Parser.parse(
                 "experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02"
         );
@@ -88,7 +88,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_validCcaInput() {
+    public void parse_validCcaInput() throws Exception {
         Command command = Parser.parse(
                 "cca Tennis /role Captain /tech nil /from 2025-01 /to 2026-01"
         );

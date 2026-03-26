@@ -3,7 +3,7 @@ package seedu.duke.Commands;
 import java.util.logging.Logger;
 
 import seedu.duke.RecordList;
-import seedu.duke.exceptions.DeleteException;
+import seedu.duke.exceptions.ResumakeException;
 import seedu.duke.recordtype.Record;
 
 public class DeleteCommand extends Command {
@@ -43,7 +43,7 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(RecordList list) {
+    public void execute(RecordList list) throws ResumakeException {
         assert list != null : "RecordList should not be null";
 
         if (isDeleteBulletMode) {
@@ -54,7 +54,7 @@ public class DeleteCommand extends Command {
         deleteRecord(list);
     }
 
-    private void deleteRecord(RecordList list) {
+    private void deleteRecord(RecordList list) throws ResumakeException {
         logger.info("Executing record delete for index=" + userRecordIndex);
         try {
             list.removeIndex(userRecordIndex - 1);
@@ -62,11 +62,11 @@ public class DeleteCommand extends Command {
             System.out.println("Deleted record " + userRecordIndex);
         } catch (IndexOutOfBoundsException e) {
             logger.warning("Record delete failed for index=" + userRecordIndex + " (out of bounds)");
-            throw new DeleteException("Nothing to delete.");
+            throw new ResumakeException("Nothing to delete.");
         }
     }
 
-    private void deleteBullet(RecordList list) {
+    private void deleteBullet(RecordList list) throws ResumakeException {
         logger.info("Executing bullet delete for record index=" + userRecordIndex
                 + ", bullet index=" + userBulletIndex);
         try {
@@ -78,7 +78,7 @@ public class DeleteCommand extends Command {
         } catch (IndexOutOfBoundsException e) {
             logger.warning("Bullet delete failed for record index=" + userRecordIndex
                     + ", bullet index=" + userBulletIndex);
-            throw new DeleteException("Nothing to delete.");
+            throw new ResumakeException("Nothing to delete.");
         }
     }
 }
