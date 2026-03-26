@@ -11,30 +11,37 @@ public class EditCommand extends Command {
     private static final Logger logger = Logger.getLogger(EditCommand.class.getName());
 
     private final int index;
-    private final String newDescription;
+    private final String newTitle;
+    private final String newRole;
+    private final String newTech;
     private final YearMonth newFrom;
     private final YearMonth newTo;
     private final Ui ui;
 
-    public EditCommand(int index, String newDescription, YearMonth newFrom, YearMonth newTo) {
-        if ((newDescription == null || newDescription.isBlank()) && newFrom == null && newTo == null) {
+    public EditCommand(int index, String newTitle, String newRole, String newTech,
+                       YearMonth newFrom, YearMonth newTo) {
+        if ((newTitle == null || newTitle.isBlank())
+                && (newRole == null || newRole.isBlank())
+                && (newTech == null || newTech.isBlank())
+                && newFrom == null
+                && newTo == null) {
             throw new IllegalArgumentException("At least one field must be provided for edit.");
         }
 
         this.index = index;
-        this.newDescription = (newDescription == null || newDescription.isBlank())
-                ? null
-                : newDescription.trim();
+        this.newTitle = (newTitle == null || newTitle.isBlank()) ? null : newTitle.trim();
+        this.newRole = (newRole == null || newRole.isBlank()) ? null : newRole.trim();
+        this.newTech = (newTech == null || newTech.isBlank()) ? null : newTech.trim();
         this.newFrom = newFrom;
         this.newTo = newTo;
         this.ui = new Ui();
 
-        assert this.ui != null : "Ui should be initialized";
-
         logger.info("EditCommand created with index=" + index
-                + ", newDescription=" + this.newDescription
-                + ", newFrom=" + newFrom
-                + ", newTo=" + newTo);
+                + ", newTitle=" + this.newTitle
+                + ", newRole=" + this.newRole
+                + ", newTech=" + this.newTech
+                + ", newFrom=" + this.newFrom
+                + ", newTo=" + this.newTo);
     }
 
     @Override
@@ -58,8 +65,14 @@ public class EditCommand extends Command {
                 throw new IllegalArgumentException("End date cannot be before start date.");
             }
 
-            if (newDescription != null) {
-                record.setDescription(newDescription);
+            if (newTitle != null) {
+                record.setDescription(newTitle);
+            }
+            if (newRole != null) {
+                record.setRole(newRole);
+            }
+            if (newTech != null) {
+                record.setTech(newTech);
             }
             if (newFrom != null) {
                 record.setFrom(newFrom);
@@ -69,7 +82,7 @@ public class EditCommand extends Command {
             }
 
             ui.showLine();
-            System.out.println("Record " + (index + 1) + " has been updated.");
+            ui.showMessage("Record " + (index + 1) + " has been updated.");
             ui.showLine();
 
             logger.info("EditCommand completed successfully for index=" + index);

@@ -36,52 +36,97 @@ public class Parser {
             int index = Integer.parseInt(editParts[0]) - 1;
             String fields = editParts[1].trim();
 
+            int roleIndex = fields.indexOf("/role");
+            int techIndex = fields.indexOf("/tech");
             int fromIndex = fields.indexOf("/from");
             int toIndex = fields.indexOf("/to");
 
-            String newDescription = null;
+            String newTitle = null;
+            String newRole = null;
+            String newTech = null;
             YearMonth newFrom = null;
             YearMonth newTo = null;
 
-            int firstFlagIndex = -1;
-            if (fromIndex != -1 && toIndex != -1) {
-                firstFlagIndex = Math.min(fromIndex, toIndex);
-            } else if (fromIndex != -1) {
+            int firstFlagIndex = fields.length();
+
+            if (roleIndex != -1 && roleIndex < firstFlagIndex) {
+                firstFlagIndex = roleIndex;
+            }
+            if (techIndex != -1 && techIndex < firstFlagIndex) {
+                firstFlagIndex = techIndex;
+            }
+            if (fromIndex != -1 && fromIndex < firstFlagIndex) {
                 firstFlagIndex = fromIndex;
-            } else if (toIndex != -1) {
+            }
+            if (toIndex != -1 && toIndex < firstFlagIndex) {
                 firstFlagIndex = toIndex;
             }
 
-            if (firstFlagIndex == -1) {
-                newDescription = fields.trim();
-            } else {
-                String titlePart = fields.substring(0, firstFlagIndex).trim();
-                if (!titlePart.isEmpty()) {
-                    newDescription = titlePart;
-                }
+            String titlePart = fields.substring(0, firstFlagIndex).trim();
+            if (!titlePart.isEmpty()) {
+                newTitle = titlePart;
             }
 
-            if (fromIndex != -1 && toIndex != -1) {
-                if (fromIndex < toIndex) {
-                    String fromPart = fields.substring(fromIndex + 5, toIndex).trim();
-                    String toPart = fields.substring(toIndex + 3).trim();
-                    newFrom = parseYearMonth(fromPart, "from");
-                    newTo = parseYearMonth(toPart, "to");
-                } else {
-                    String toPart = fields.substring(toIndex + 3, fromIndex).trim();
-                    String fromPart = fields.substring(fromIndex + 5).trim();
-                    newTo = parseYearMonth(toPart, "to");
-                    newFrom = parseYearMonth(fromPart, "from");
+            if (roleIndex != -1) {
+                int roleEnd = fields.length();
+                if (techIndex != -1 && techIndex > roleIndex && techIndex < roleEnd) {
+                    roleEnd = techIndex;
                 }
-            } else if (fromIndex != -1) {
-                String fromPart = fields.substring(fromIndex + 5).trim();
+                if (fromIndex != -1 && fromIndex > roleIndex && fromIndex < roleEnd) {
+                    roleEnd = fromIndex;
+                }
+                if (toIndex != -1 && toIndex > roleIndex && toIndex < roleEnd) {
+                    roleEnd = toIndex;
+                }
+                newRole = fields.substring(roleIndex + 5, roleEnd).trim();
+            }
+
+            if (techIndex != -1) {
+                int techEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > techIndex && roleIndex < techEnd) {
+                    techEnd = roleIndex;
+                }
+                if (fromIndex != -1 && fromIndex > techIndex && fromIndex < techEnd) {
+                    techEnd = fromIndex;
+                }
+                if (toIndex != -1 && toIndex > techIndex && toIndex < techEnd) {
+                    techEnd = toIndex;
+                }
+                newTech = fields.substring(techIndex + 5, techEnd).trim();
+            }
+
+            if (fromIndex != -1) {
+                int fromEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > fromIndex && roleIndex < fromEnd) {
+                    fromEnd = roleIndex;
+                }
+                if (techIndex != -1 && techIndex > fromIndex && techIndex < fromEnd) {
+                    fromEnd = techIndex;
+                }
+                if (toIndex != -1 && toIndex > fromIndex && toIndex < fromEnd) {
+                    fromEnd = toIndex;
+                }
+                String fromPart = fields.substring(fromIndex + 5, fromEnd).trim();
                 newFrom = parseYearMonth(fromPart, "from");
-            } else if (toIndex != -1) {
-                String toPart = fields.substring(toIndex + 3).trim();
+            }
+
+            if (toIndex != -1) {
+                int toEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > toIndex && roleIndex < toEnd) {
+                    toEnd = roleIndex;
+                }
+                if (techIndex != -1 && techIndex > toIndex && techIndex < toEnd) {
+                    toEnd = techIndex;
+                }
+                if (fromIndex != -1 && fromIndex > toIndex && fromIndex < toEnd) {
+                    toEnd = fromIndex;
+                }
+                String toPart = fields.substring(toIndex + 3, toEnd).trim();
                 newTo = parseYearMonth(toPart, "to");
             }
 
-            return new EditCommand(index, newDescription, newFrom, newTo);
+            return new EditCommand(index, newTitle, newRole, newTech, newFrom, newTo);
+
         } catch (NumberFormatException e) {
             return null;
         }
