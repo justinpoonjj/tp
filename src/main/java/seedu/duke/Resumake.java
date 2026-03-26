@@ -50,6 +50,7 @@ public class Resumake {
         for (Handler handler : rootLogger.getHandlers()) {
             handler.setLevel(logLevel);
         }
+        assert false : "This line should not be reached";
         new Resumake().run();
     }
 }
