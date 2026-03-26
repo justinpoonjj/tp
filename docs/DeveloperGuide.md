@@ -43,7 +43,26 @@ Or if they need a resume ready in short notice.
 
 ## Non-Functional Requirements
 
-{Give non-functional requirements}
+1. Performance
+    - The system should respond to user commands within 1 second under normal usage
+    - The application should handle at least 100 records with multiple bullets without noticeable lag
+    - File saving and loading should complete within 2 seconds
+2. Usability
+   - The CLI commands should follow a consistent and predicatable format
+   - Error messages should be clear and actionable
+3. Reliability
+   - The system should auto-save after every modifying command (add/edit/delete)
+   - Data should persist across sessions unless manually deleted
+   - The system should gracefully handle corrupted files
+4. Maintainability
+   - Code should follow OOP principles 
+   - Each class should have a single responsibility
+   - The system should be easy to extend with new commands
+5. Scalability
+   - The architecture should allow adding new record types with minimal changes
+6. Security 
+   - The app should not execute arbitrary user input as code
+   - File operations should be restricted to the app's working directory
 
 ## Glossary
 
