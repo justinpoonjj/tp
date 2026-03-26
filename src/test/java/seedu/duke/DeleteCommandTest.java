@@ -5,7 +5,7 @@ import java.time.YearMonth;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.Commands.DeleteCommand;
-import seedu.duke.exceptions.DeleteException;
+import seedu.duke.exceptions.ResumakeException;
 import seedu.duke.recordtype.Project;
 import seedu.duke.recordtype.Record;
 
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteCommandTest {
     @Test
-    public void execute_deleteRecord_success() {
+    public void execute_deleteRecord_success() throws Exception {
         RecordList list = new RecordList();
         list.add(new Project("Capo CLI", "Developer", "Java",
                 YearMonth.parse("2026-01"), YearMonth.parse("2026-03")));
@@ -26,16 +26,16 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_deleteRecord_invalidIndexThrowsDeleteException() {
+    public void execute_deleteRecord_invalidIndexThrowsResumakeException() {
         RecordList list = new RecordList();
 
         DeleteCommand command = new DeleteCommand(1);
 
-        assertThrows(DeleteException.class, () -> command.execute(list));
+        assertThrows(ResumakeException.class, () -> command.execute(list));
     }
 
     @Test
-    public void execute_deleteBullet_success() {
+    public void execute_deleteBullet_success() throws Exception {
         RecordList list = new RecordList();
         Record record = new Project("Capo CLI", "Developer", "Java",
                 YearMonth.parse("2026-01"), YearMonth.parse("2026-03"));
@@ -51,7 +51,7 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_deleteBullet_invalidIndexThrowsDeleteException() {
+    public void execute_deleteBullet_invalidIndexThrowsResumakeException() {
         RecordList list = new RecordList();
         Record record = new Project("Capo CLI", "Developer", "Java",
                 YearMonth.parse("2026-01"), YearMonth.parse("2026-03"));
@@ -59,6 +59,6 @@ public class DeleteCommandTest {
 
         DeleteCommand command = new DeleteCommand(1, 1);
 
-        assertThrows(DeleteException.class, () -> command.execute(list));
+        assertThrows(ResumakeException.class, () -> command.execute(list));
     }
 }
