@@ -85,6 +85,20 @@ public class Record {
         this.to = to;
     }
 
+    public void setRole(String role) {
+        if (role == null || role.isBlank()) {
+            throw new IllegalArgumentException("Role cannot be blank.");
+        }
+        this.role = role.trim();
+    }
+
+    public void setTech(String tech) {
+        if (tech == null || tech.isBlank()) {
+            throw new IllegalArgumentException("Tech cannot be blank.");
+        }
+        this.tech = tech.trim();
+    }
+
     public String getRecordType() {
         return recordType;
     }

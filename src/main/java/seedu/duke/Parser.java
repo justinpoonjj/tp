@@ -5,16 +5,16 @@ import java.time.YearMonth;
 
 import java.util.logging.Logger;
 
-import seedu.duke.Commands.AddBulletCommand;
-import seedu.duke.Commands.MoveBulletCommand;
-import seedu.duke.Commands.AddCommand;
-import seedu.duke.Commands.Command;
-import seedu.duke.Commands.DeleteCommand;
-import seedu.duke.Commands.ExitCommand;
-import seedu.duke.Commands.FindCommand;
-import seedu.duke.Commands.ListCommand;
-import seedu.duke.Commands.ShowCommand;
-import seedu.duke.Commands.EditCommand;
+import seedu.duke.commands.AddBulletCommand;
+import seedu.duke.commands.MoveBulletCommand;
+import seedu.duke.commands.AddCommand;
+import seedu.duke.commands.Command;
+import seedu.duke.commands.DeleteCommand;
+import seedu.duke.commands.ExitCommand;
+import seedu.duke.commands.FindCommand;
+import seedu.duke.commands.ListCommand;
+import seedu.duke.commands.ShowCommand;
+import seedu.duke.commands.EditCommand;
 import seedu.duke.recordtype.Cca;
 import seedu.duke.recordtype.Experience;
 import seedu.duke.recordtype.Project;
@@ -36,52 +36,97 @@ public class Parser {
             int index = Integer.parseInt(editParts[0]) - 1;
             String fields = editParts[1].trim();
 
+            int roleIndex = fields.indexOf("/role");
+            int techIndex = fields.indexOf("/tech");
             int fromIndex = fields.indexOf("/from");
             int toIndex = fields.indexOf("/to");
 
-            String newDescription = null;
+            String newTitle = null;
+            String newRole = null;
+            String newTech = null;
             YearMonth newFrom = null;
             YearMonth newTo = null;
 
-            int firstFlagIndex = -1;
-            if (fromIndex != -1 && toIndex != -1) {
-                firstFlagIndex = Math.min(fromIndex, toIndex);
-            } else if (fromIndex != -1) {
+            int firstFlagIndex = fields.length();
+
+            if (roleIndex != -1 && roleIndex < firstFlagIndex) {
+                firstFlagIndex = roleIndex;
+            }
+            if (techIndex != -1 && techIndex < firstFlagIndex) {
+                firstFlagIndex = techIndex;
+            }
+            if (fromIndex != -1 && fromIndex < firstFlagIndex) {
                 firstFlagIndex = fromIndex;
-            } else if (toIndex != -1) {
+            }
+            if (toIndex != -1 && toIndex < firstFlagIndex) {
                 firstFlagIndex = toIndex;
             }
 
-            if (firstFlagIndex == -1) {
-                newDescription = fields.trim();
-            } else {
-                String titlePart = fields.substring(0, firstFlagIndex).trim();
-                if (!titlePart.isEmpty()) {
-                    newDescription = titlePart;
-                }
+            String titlePart = fields.substring(0, firstFlagIndex).trim();
+            if (!titlePart.isEmpty()) {
+                newTitle = titlePart;
             }
 
-            if (fromIndex != -1 && toIndex != -1) {
-                if (fromIndex < toIndex) {
-                    String fromPart = fields.substring(fromIndex + 5, toIndex).trim();
-                    String toPart = fields.substring(toIndex + 3).trim();
-                    newFrom = parseYearMonth(fromPart, "from");
-                    newTo = parseYearMonth(toPart, "to");
-                } else {
-                    String toPart = fields.substring(toIndex + 3, fromIndex).trim();
-                    String fromPart = fields.substring(fromIndex + 5).trim();
-                    newTo = parseYearMonth(toPart, "to");
-                    newFrom = parseYearMonth(fromPart, "from");
+            if (roleIndex != -1) {
+                int roleEnd = fields.length();
+                if (techIndex != -1 && techIndex > roleIndex && techIndex < roleEnd) {
+                    roleEnd = techIndex;
                 }
-            } else if (fromIndex != -1) {
-                String fromPart = fields.substring(fromIndex + 5).trim();
+                if (fromIndex != -1 && fromIndex > roleIndex && fromIndex < roleEnd) {
+                    roleEnd = fromIndex;
+                }
+                if (toIndex != -1 && toIndex > roleIndex && toIndex < roleEnd) {
+                    roleEnd = toIndex;
+                }
+                newRole = fields.substring(roleIndex + 5, roleEnd).trim();
+            }
+
+            if (techIndex != -1) {
+                int techEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > techIndex && roleIndex < techEnd) {
+                    techEnd = roleIndex;
+                }
+                if (fromIndex != -1 && fromIndex > techIndex && fromIndex < techEnd) {
+                    techEnd = fromIndex;
+                }
+                if (toIndex != -1 && toIndex > techIndex && toIndex < techEnd) {
+                    techEnd = toIndex;
+                }
+                newTech = fields.substring(techIndex + 5, techEnd).trim();
+            }
+
+            if (fromIndex != -1) {
+                int fromEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > fromIndex && roleIndex < fromEnd) {
+                    fromEnd = roleIndex;
+                }
+                if (techIndex != -1 && techIndex > fromIndex && techIndex < fromEnd) {
+                    fromEnd = techIndex;
+                }
+                if (toIndex != -1 && toIndex > fromIndex && toIndex < fromEnd) {
+                    fromEnd = toIndex;
+                }
+                String fromPart = fields.substring(fromIndex + 5, fromEnd).trim();
                 newFrom = parseYearMonth(fromPart, "from");
-            } else if (toIndex != -1) {
-                String toPart = fields.substring(toIndex + 3).trim();
+            }
+
+            if (toIndex != -1) {
+                int toEnd = fields.length();
+                if (roleIndex != -1 && roleIndex > toIndex && roleIndex < toEnd) {
+                    toEnd = roleIndex;
+                }
+                if (techIndex != -1 && techIndex > toIndex && techIndex < toEnd) {
+                    toEnd = techIndex;
+                }
+                if (fromIndex != -1 && fromIndex > toIndex && fromIndex < toEnd) {
+                    toEnd = fromIndex;
+                }
+                String toPart = fields.substring(toIndex + 3, toEnd).trim();
                 newTo = parseYearMonth(toPart, "to");
             }
 
-            return new EditCommand(index, newDescription, newFrom, newTo);
+            return new EditCommand(index, newTitle, newRole, newTech, newFrom, newTo);
+
         } catch (NumberFormatException e) {
             return null;
         }
@@ -123,6 +168,7 @@ public class Parser {
             } catch (NumberFormatException e) {
                 return null;
             }
+
         case "list":
             logger.info("List command detected");
             return new ListCommand();
@@ -150,7 +196,7 @@ public class Parser {
             logger.info("Add CCA command detected");
             r = parseCca(split);
             return new AddCommand(r);
-            
+
         case "delete":
             if (split.length < 2) {
                 return null;
@@ -183,20 +229,19 @@ public class Parser {
                 return null;
             }
             logger.info("Bullet command detected");
-            String[] parts = split[1].split("\\s+",2);
+            String[] parts = split[1].split("\\s+", 2);
             if (parts.length < 2) {
                 return null;
             }
-            try{
+            try {
                 int index = Integer.parseInt(parts[0]) - 1;
                 String bulletPart = parts[1].trim();
                 if (!bulletPart.startsWith("/")) {
                     throw new IllegalArgumentException("Bullet must start with /");
                 }
                 String bullet = bulletPart.substring(1).trim();
-
-                return new AddBulletCommand(index,bullet);
-            }catch (NumberFormatException e) {
+                return new AddBulletCommand(index, bullet);
+            } catch (NumberFormatException e) {
                 return null;
             }
 
@@ -235,17 +280,17 @@ public class Parser {
 
     private static Project parseProject(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
-        return new Project(fields.title,fields.role,fields.tech,fields.from,fields.to);
+        return new Project(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
     private static Experience parseExperience(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
-        return new Experience(fields.title,fields.role,fields.tech,fields.from,fields.to);
+        return new Experience(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
     private static Cca parseCca(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
-        return new Cca(fields.title,fields.role,fields.tech,fields.from,fields.to);
+        return new Cca(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
     private static ParsedFields parseTimedRecordFields(String[] split) {
@@ -263,7 +308,8 @@ public class Parser {
 
         if (roleIndex == -1 || techIndex == -1 || fromIndex == -1 || toIndex == -1) {
             throw new IllegalArgumentException(
-                    "Invalid format. Expected: \"title\" /role \"role\" /tech \"tech\" /from yyyy-MM /to yyyy-MM"
+                    "Invalid format. Expected: \"title\" /role \"role\" /tech \"tech\" "
+                            + "/from yyyy-MM /to yyyy-MM"
             );
         }
 
@@ -271,10 +317,10 @@ public class Parser {
             throw new IllegalArgumentException("Fields are in the wrong order.");
         }
 
-        String titlePart = args.substring(0,roleIndex).trim();
-        String rolePart = args.substring(roleIndex+5,techIndex).trim();
-        String techPart = args.substring(techIndex+5, fromIndex).trim();
-        String fromPart = args.substring(fromIndex+5,toIndex).trim();
+        String titlePart = args.substring(0, roleIndex).trim();
+        String rolePart = args.substring(roleIndex + 5, techIndex).trim();
+        String techPart = args.substring(techIndex + 5, fromIndex).trim();
+        String fromPart = args.substring(fromIndex + 5, toIndex).trim();
         String toPart = args.substring(toIndex + 3).trim();
 
         logger.fine("Parsed title: " + titlePart);
@@ -282,11 +328,11 @@ public class Parser {
         YearMonth from = parseYearMonth(fromPart, "from");
         YearMonth to = parseYearMonth(toPart, "to");
 
-        if (to.isBefore(from)){
+        if (to.isBefore(from)) {
             throw new IllegalArgumentException("End data cannot be before start date");
         }
 
-        return new ParsedFields(titlePart,rolePart,techPart,from,to);
+        return new ParsedFields(titlePart, rolePart, techPart, from, to);
     }
 
     private static YearMonth parseYearMonth(String input, String fieldName) {
