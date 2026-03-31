@@ -8,6 +8,8 @@ import java.io.PrintStream;
 import java.time.YearMonth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import seedu.duke.commands.FindCommand;
 import seedu.duke.recordtype.Record;
@@ -124,5 +126,26 @@ public class FindCommandTest {
                 + "--------------------" + lineSeparator;
 
         assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
+    public void constructor_nullKeyword_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new FindCommand(null));
+    }
+
+    @Test
+    public void constructor_blankKeyword_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new FindCommand("   "));
+    }
+
+    @Test
+    public void execute_nullRecordList_printsErrorMessage() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        FindCommand findCommand = new FindCommand("java");
+        findCommand.execute(null);
+
+        assertTrue(outputStream.toString().contains("RecordList cannot be null"));
     }
 }

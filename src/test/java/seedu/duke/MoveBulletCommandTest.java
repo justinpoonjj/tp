@@ -83,6 +83,21 @@ public class MoveBulletCommandTest {
     }
 
     @Test
+    public void execute_negativeRecordIndex_noMutation() {
+        RecordList list = new RecordList();
+        Record record = createRecordWithThreeBullets();
+        list.add(record);
+
+        MoveBulletCommand command = new MoveBulletCommand(-1, 0, 1);
+        command.execute(list);
+
+        assertEquals(3, record.getBullets().size());
+        assertEquals("A", record.getBullets().get(0));
+        assertEquals("B", record.getBullets().get(1));
+        assertEquals("C", record.getBullets().get(2));
+    }
+
+    @Test
     public void execute_invalidFromBulletIndex_noMutation() {
         RecordList list = new RecordList();
         Record record = createRecordWithThreeBullets();

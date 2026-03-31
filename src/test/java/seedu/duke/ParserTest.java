@@ -17,6 +17,7 @@ import seedu.duke.commands.FindCommand;
 import seedu.duke.commands.EditCommand;
 import seedu.duke.recordtype.Record;
 import seedu.duke.commands.EditBulletCommand;
+import seedu.duke.commands.MoveBulletCommand;
 
 public class ParserTest {
     @Test
@@ -253,5 +254,55 @@ public class ParserTest {
         assertEquals(2, editBulletCommand.getUserRecordIndex());
         assertEquals(3, editBulletCommand.getUserBulletIndex());
         assertEquals("updated frontend UI", editBulletCommand.getNewBullet());
+    }
+
+    @Test
+    public void parse_moveBulletCommand_validInput_returnsMoveBulletCommand() {
+        Command command = Parser.parse("movebullet 1 1 3");
+        assertInstanceOf(MoveBulletCommand.class, command);
+    }
+
+    @Test
+    public void parse_moveBulletCommand_validInput_executesWithExpectedIndexes() throws Exception {
+        Command command = Parser.parse("movebullet 1 1 3");
+        assertInstanceOf(MoveBulletCommand.class, command);
+
+        RecordList list = new RecordList();
+        Record record = new Record(
+                "Old Title",
+                "Developer",
+                "Java",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        );
+        record.addBullet("A");
+        record.addBullet("B");
+        record.addBullet("C");
+        list.add(record);
+
+        command.execute(list);
+
+        assertEquals("B", record.getBullets().get(0));
+        assertEquals("C", record.getBullets().get(1));
+        assertEquals("A", record.getBullets().get(2));
+    }
+
+    @Test
+    public void parse_moveBulletCommand_missingArguments_returnsNull() {
+        assertNull(Parser.parse("movebullet"));
+        assertNull(Parser.parse("movebullet 1"));
+        assertNull(Parser.parse("movebullet 1 2"));
+    }
+
+    @Test
+    public void parse_moveBulletCommand_nonNumericArguments_returnsNull() {
+        assertNull(Parser.parse("movebullet x 1 2"));
+        assertNull(Parser.parse("movebullet 1 y 2"));
+        assertNull(Parser.parse("movebullet 1 2 z"));
+    }
+
+    @Test
+    public void parse_moveBulletCommand_extraArguments_returnsNull() {
+        assertNull(Parser.parse("movebullet 1 2 3 4"));
     }
 }
