@@ -257,13 +257,13 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_moveBulletCommand_validInput_returnsMoveBulletCommand() {
+    public void parseMovebulletCommandValidInput() {
         Command command = Parser.parse("movebullet 1 1 3");
         assertInstanceOf(MoveBulletCommand.class, command);
     }
 
     @Test
-    public void parse_moveBulletCommand_validInput_executesWithExpectedIndexes() throws Exception {
+    public void parseMovebulletCommandExecutesWithExpectedIndexes() throws Exception {
         Command command = Parser.parse("movebullet 1 1 3");
         assertInstanceOf(MoveBulletCommand.class, command);
 
@@ -288,21 +288,21 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_moveBulletCommand_missingArguments_returnsNull() {
+    public void parseMovebulletCommandMissingArguments() {
         assertNull(Parser.parse("movebullet"));
         assertNull(Parser.parse("movebullet 1"));
         assertNull(Parser.parse("movebullet 1 2"));
     }
 
     @Test
-    public void parse_moveBulletCommand_nonNumericArguments_returnsNull() {
+    public void parseMovebulletCommandNonnumericArguments() {
         assertNull(Parser.parse("movebullet x 1 2"));
         assertNull(Parser.parse("movebullet 1 y 2"));
         assertNull(Parser.parse("movebullet 1 2 z"));
     }
 
     @Test
-    public void parse_moveBulletCommand_extraArguments_returnsNull() {
+    public void parseMovebulletCommandExtraArguments() {
         assertNull(Parser.parse("movebullet 1 2 3 4"));
     }
 }
