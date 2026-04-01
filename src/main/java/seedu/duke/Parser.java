@@ -181,7 +181,7 @@ public class Parser {
             YearMonth finalTo = newTo;
             if (finalFrom != null && finalTo != null && finalTo.isBefore(finalFrom)) {
                 logger.warning("Edit command failed: end date is before start date");
-                throw new ResumakeException("end date is before start date");
+                throw new ResumakeException("End date cannot be before start date");
             }
 
             logger.fine("Parsed edit fields: index=" + index
@@ -266,7 +266,7 @@ public class Parser {
 
         case "experience":
             if (split.length < 2) {
-                return null;
+                throw new ResumakeException("Please follow the correct format");
             }
             logger.info("Add experience command detected");
             r = parseExperience(split);
@@ -449,14 +449,14 @@ public class Parser {
         int toIndex = args.indexOf("/to");
 
         if (roleIndex == -1 || techIndex == -1 || fromIndex == -1 || toIndex == -1) {
-            throw new IllegalArgumentException(
+            throw new ResumakeException(
                     "Invalid format. Expected: \"title\" /role \"role\" /tech \"tech\" "
                             + "/from yyyy-MM /to yyyy-MM"
             );
         }
 
         if (!(roleIndex < techIndex && techIndex < fromIndex && fromIndex < toIndex)) {
-            throw new IllegalArgumentException("Fields are in the wrong order.");
+            throw new ResumakeException("Fields are in the wrong order.");
         }
 
         String titlePart = args.substring(0, roleIndex).trim();
