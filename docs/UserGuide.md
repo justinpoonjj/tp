@@ -1,6 +1,6 @@
-# Resumake User Guide
+# ResuMake User Guide
 
-Resumake is a command-line resume content manager that helps you store, edit, and organize resume records quickly.
+ResuMake is a command-line resume content manager that helps you store, edit, and organize resume records quickly.
 
 You can manage:
 - Projects
@@ -8,7 +8,7 @@ You can manage:
 - CCAs
 - Bullet points under each record
 
-Resumake runs in the terminal and saves your data locally in `records.txt` so records persist across sessions.
+ResuMake runs in the terminal and saves your data locally in `records.txt` so records persist across sessions.
 
 ---
 
@@ -49,7 +49,7 @@ Resumake runs in the terminal and saves your data locally in `records.txt` so re
 > - Record and bullet indices are 1-based.
 > - Date format is `YYYY-MM`.
 > - For `project`, `experience`, and `cca`, flags must appear in this order: `/role`, `/tech`, `/from`, `/to`.
-> - After each valid command, Resumake auto-saves and prints `Records saved to file.`
+> - After each valid command, ResuMake auto-saves and prints `Records saved to file.`
 
 ---
 
@@ -202,7 +202,7 @@ Bullet 3 moved to position 1 in record 1.
 
 ### Exiting the program : `bye`
 
-Exits Resumake.
+Exits ResuMake.
 
 Format:
 `bye`
@@ -223,10 +223,10 @@ bye
 
 ## FAQ
 
-**Q: How do I move my Resumake data to another computer?**  
+**Q: How do I move my ResuMake data to another computer?**  
 **A:** Copy the `records.txt` file from your current project folder to the same location in the new machine’s project folder.
 
-**Q: Why does Resumake show `Unknown command.`?**  
+**Q: Why does ResuMake show `Unknown command.`?**  
 **A:** The command format is invalid or incomplete. Check spelling, required parameters, and flag order (for add record commands: `/role /tech /from /to`).
 
 **Q: I edited/deleted the wrong item. Can I undo it?**  
@@ -259,7 +259,7 @@ bye
 
 ## Saving
 
-Resumake saves records to:
+ResuMake saves records to:
 
 ```text
 records.txt
