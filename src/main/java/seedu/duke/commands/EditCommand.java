@@ -1,3 +1,26 @@
+/**
+ * Represents a command that edits fields of a record in the RecordList.
+ *
+ * <p>The command supports partial updates. Only the fields provided by the user
+ * will be modified, while unspecified fields remain unchanged.</p>
+ *
+ * <p>Editable fields include:
+ * <ul>
+ *     <li>title</li>
+ *     <li>role</li>
+ *     <li>tech</li>
+ *     <li>from (start date)</li>
+ *     <li>to (end date)</li>
+ * </ul>
+ *
+ * <p>Validation ensures that:
+ * <ul>
+ *     <li>At least one field is provided for editing</li>
+ *     <li>Date ranges remain valid (from ≤ to)</li>
+ * </ul>
+ * </p>
+ */
+
 package seedu.duke.commands;
 
 import seedu.duke.RecordList;
@@ -17,6 +40,19 @@ public class EditCommand extends Command {
     private final YearMonth newFrom;
     private final YearMonth newTo;
     private final Ui ui;
+
+    /**
+     * Constructs an EditCommand to update specified fields of a record.
+     *
+     * @param index The 0-based index of the record in the RecordList.
+     * @param newTitle The new title of the record, or null if unchanged.
+     * @param newRole The new role of the record, or null if unchanged.
+     * @param newTech The new tech of the record, or null if unchanged.
+     * @param newFrom The new start date, or null if unchanged.
+     * @param newTo The new end date, or null if unchanged.
+     *
+     * @throws IllegalArgumentException If all fields are null or blank.
+     */
 
     public EditCommand(int index, String newTitle, String newRole, String newTech,
                        YearMonth newFrom, YearMonth newTo) {
@@ -50,6 +86,18 @@ public class EditCommand extends Command {
                 + ", from=" + this.newFrom
                 + ", to=" + this.newTo);
     }
+
+    /**
+     * Executes the edit operation on the given RecordList.
+     *
+     * <p>If the index is valid, the specified fields of the target record
+     * will be updated. Fields that are null will not be modified.</p>
+     *
+     * <p>If the index is invalid or the updated date range is invalid,
+     * no changes will be made.</p>
+     *
+     * @param list The RecordList containing records.
+     */
 
     @Override
     public void execute(RecordList list) {
