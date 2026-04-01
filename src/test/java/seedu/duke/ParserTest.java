@@ -15,6 +15,7 @@ import seedu.duke.commands.AddCommand;
 import seedu.duke.commands.Command;
 import seedu.duke.commands.ExitCommand;
 import seedu.duke.commands.FindCommand;
+import seedu.duke.commands.FindBulletCommand;
 import seedu.duke.commands.EditCommand;
 import seedu.duke.recordtype.Record;
 import seedu.duke.commands.EditBulletCommand;
@@ -46,6 +47,19 @@ public class ParserTest {
         Command command = Parser.parse("find    java");
         assertInstanceOf(FindCommand.class, command);
         assertEquals("java", ((FindCommand) command).getKeyword());
+    }
+
+    @Test
+    public void parse_findBulletInput_returnsFindBulletCommand() {
+        Command command = Parser.parse("findbullet persistent");
+        assertInstanceOf(FindBulletCommand.class, command);
+        assertEquals("persistent", ((FindBulletCommand) command).getKeyword());
+    }
+
+    @Test
+    public void parse_findBulletWithoutKeyword_returnsNull() {
+        Command command = Parser.parse("findbullet");
+        assertNull(command);
     }
 
     @Test
