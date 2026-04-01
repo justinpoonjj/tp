@@ -256,7 +256,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_editOnlyFrom_validDate_updatesOnlyFrom() {
+    public void executeEditOnlyFromUpdatesFrom() {
         RecordList recordList = new RecordList();
         Record record = new Record(
                 "Old Title",
@@ -277,7 +277,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_editOnlyTo_validDate_updatesOnlyTo() {
+    public void executeEditOnlyToUpdatesTo() {
         RecordList recordList = new RecordList();
         Record record = new Record(
                 "Old Title",

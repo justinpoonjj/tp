@@ -2,6 +2,7 @@ package seedu.duke;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.YearMonth;
 
@@ -50,21 +51,9 @@ public class AddBulletCommandTest {
     }
 
     @Test
-    public void addBullet_blankBullet_noMutation() {
-        RecordList list = new RecordList();
-        Record record = new Record(
-                "Resumake CLI",
-                "Developer",
-                "Java",
-                YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
-        list.add(record);
-
-        AddBulletCommand command = new AddBulletCommand(0, "   ");
-        command.execute(list);
-
-        assertEquals(0, record.getBullets().size());
+    public void addBullet_blankBullet_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new AddBulletCommand(0, "   "));
     }
 
     @Test

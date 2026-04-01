@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import seedu.duke.commands.AddBulletCommand;
 import seedu.duke.commands.AddCommand;
@@ -337,8 +338,9 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_editbulletMissingSlash_returnsNull() {
-        assertNull(Parser.parse("editbullet 1 1 updated bullet"));
+    public void parse_addbulletMissingSlash_throwsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                Parser.parse("addbullet 1 missing slash"));
     }
 
     @Test
@@ -348,12 +350,8 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_addbulletMissingSlash_returnsNull() {
-        assertNull(Parser.parse("addbullet 1 did frontend UI"));
-    }
-
-    @Test
-    public void parse_addbulletMissingBulletText_returnsNull() {
-        assertNull(Parser.parse("addbullet 1 /"));
+    public void parse_addbulletMissingBulletText_throwsException() {
+        assertThrows(IllegalArgumentException.class, () ->
+                Parser.parse("addbullet 1 /"));
     }
 }
