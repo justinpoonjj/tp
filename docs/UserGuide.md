@@ -53,12 +53,33 @@ Resumake runs in the terminal and saves your data locally in `records.txt` so re
 
 ---
 
-### Add a record : `project` \ `experience` \ `cca`
+### Adding a project : `project`
 
-Creates a new record in Resumake
+Adds a new project record.
 
 Format:
-`project/ experience/ cca TITLE /role ROLE /tech TECH /from STARTDATE /to ENDDATE`
+`project TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
+
+Example:
+```text
+project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03
+```
+
+Expected output:
+```text
+--------------------
+[P] Capo CLI added
+--------------------
+```
+
+---
+
+### Adding an experience : `experience`
+
+Adds a new experience record.
+
+Format:
+`experience TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
 
 Example:
 ```text
@@ -71,13 +92,34 @@ Expected output:
 [E] Google added
 --------------------
 ```
+
 ---
 
-### Adding bullet to record : `addbullet`
+### Adding a CCA : `cca`
 
-Adds a resume bullet to an existing record
+Adds a new CCA record.
 
-Format: 
+Format:
+`cca TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
+
+Example:
+```text
+cca NUS Hackers /role Core Member /tech Python /from 2025-01 /to 2026-01
+```
+
+Expected output:
+```text
+--------------------
+[C] NUS Hackers added
+--------------------
+```
+
+---
+### Adding a bullet : `addbullet`
+
+Adds a bullet to a record.
+
+Format:
 `addbullet RECORD_INDEX / BULLET_TEXT`
 
 Example:
@@ -85,13 +127,10 @@ Example:
 addbullet 1 / Implemented persistent storage with file IO
 ```
 
-Expected output (example):
+Expected output:
 ```text
 --------------------
-Matching records:
-[E] Google | role: SWE Intern | tech: JavaScript | from: 2025-12 | to: 2026-02
-  Bullets:
-  1. Implemented persistent storage with file IO
+Added bullet to: Capo CLI
 --------------------
 ```
 ---
