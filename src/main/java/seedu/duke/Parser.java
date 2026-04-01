@@ -18,6 +18,7 @@ import seedu.duke.commands.ListCommand;
 import seedu.duke.commands.ShowCommand;
 import seedu.duke.commands.EditCommand;
 import seedu.duke.commands.SortCommand;
+import seedu.duke.exceptions.ResumakeException;
 import seedu.duke.recordtype.Cca;
 import seedu.duke.recordtype.Experience;
 import seedu.duke.recordtype.Project;
@@ -27,6 +28,12 @@ public class Parser {
 
     private static final Logger logger = Logger.getLogger(Parser.class.getName());
 
+    /**
+     * Parses an edit command string into an {@code EditCommand}
+     *
+     * @param args The argument string following the "edit" keyword.
+     * @return An {@code EditCommand} if parsing is successful or {@code null} if invalid.
+     */
     private static Command parseEditCommand(String args) {
         logger.info("Edit command detected");
         logger.fine(() -> "Parsing edit command args: " + args);
@@ -195,7 +202,15 @@ public class Parser {
         }
     }
 
-    public static Command parse(String userInput) {
+    /**
+     * Parses a user input string into a corresponding {@code Command}.
+     *
+     * @param userInput The raw input string entered by the user.
+     * @return A {@code Command} object representing the user request,
+     *         or {@code null} if the input is invalid.
+     * @throws ResumakeException If a parsing-related error occurs.
+     */
+    public static Command parse(String userInput) throws ResumakeException {
         logger.info("Parsing input: " + userInput);
 
         String trimmedInput = userInput.trim();
@@ -377,21 +392,49 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses input arguments into a {@code Project} record
+     *
+     * @param split The split user input containing command and arguments
+     * @return A {@code Project} object
+     */
     private static Project parseProject(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
         return new Project(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
+    /**
+     * Parses input arguments into a {@code Experience} record
+     *
+     * @param split The split user input containing command and arguments.
+     * @return An {@code Experience} object.
+     */
     private static Experience parseExperience(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
         return new Experience(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
+    /**
+     * Parses input arguments into a {@code Cca} record.
+     *
+     * @param split The split user input containing command and arguments
+     * @return A {@code Cca} object.
+     */
     private static Cca parseCca(String[] split) {
         ParsedFields fields = parseTimedRecordFields(split);
         return new Cca(fields.title, fields.role, fields.tech, fields.from, fields.to);
     }
 
+    /**
+     * Parses common fields for time-based records such as project, experience and CCA
+     *
+     * Expected format:
+     * {@code "title" /role "role" /tech "tech" /from yyyy-MM /to yyyy-MM}
+     *
+     * @param split The split user input containing command and arguments.
+     * @return A {@code ParsedFields} object containing extracted values.
+     * @throws IllegalArgumentException If the input format is invalid.
+     */
     private static ParsedFields parseTimedRecordFields(String[] split) {
         logger.fine("Parsing timed record fields");
 
@@ -434,6 +477,14 @@ public class Parser {
         return new ParsedFields(titlePart, rolePart, techPart, from, to);
     }
 
+    /**
+     * Parses a string into a {@code YearMonth} object.
+     *
+     * @param input The date string in yyyy-MM format.
+     * @param fieldName The name of the field being parsed (for error messages)
+     * @return A {@code YearMonth} object
+     * @throws IllegalArgumentException If the input format in invalid.
+     */
     private static YearMonth parseYearMonth(String input, String fieldName) {
         try {
             return YearMonth.parse(input.trim());
