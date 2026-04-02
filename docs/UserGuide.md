@@ -199,9 +199,9 @@ Expected Output:
 ```text
 --------------------
 Edited bullet 2 in record 1
+Records saved to file
 --------------------
 ```
-
 ---
 
 ### Finding records by keyword : `find`
