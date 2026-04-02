@@ -2,6 +2,8 @@ package seedu.duke;
 
 import java.util.*;
 
+import seedu.duke.exceptions.ResumakeException;
+
 public class User {
     private static User instance;
     private String name;
@@ -45,6 +47,26 @@ public class User {
         return instance;
     }
 
+    public void editField(String field, String value) throws ResumakeException {
+        switch (field.toLowerCase()) {
+        case "name":
+            this.name = value;
+            break;
+        case "number":
+            try {
+                this.number = Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new ResumakeException("Please enter a valid number.");
+            }
+            break;
+        case "email":
+            this.email = value;
+            break;
+        default:
+            throw new ResumakeException("Unknown field: " + field
+                    + ". Use name, number, or email.");
+        }
+    }
 
     public String getName(){
         return this.name;
