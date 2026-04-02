@@ -37,7 +37,7 @@ ResuMake runs in the terminal and saves your data locally in `records.txt` so re
 - [delete](#deleting-a-record--delete)
 - [deletebullet](#deleting-a-bullet--deletebullet)
 - [sort](#sorting-records-by-title--sort)
-- [generate](#generating-grouped-output--generate)
+- [generate](#generating-resume--generate)
 - [bye](#exiting-the-program--bye)
 
 ---
@@ -52,6 +52,30 @@ ResuMake runs in the terminal and saves your data locally in `records.txt` so re
 > - For `project`, `experience`, and `cca`, flags must appear in this order: `/role`, `/tech`, `/from`, `/to`.
 > - After each valid command, ResuMake auto-saves and prints `Records saved to file.`
 
+---
+
+### Viewing records : `list`
+Lists all records, or filters by type.
+ 
+Format:
+`list [TYPE]`
+ 
+- `TYPE` is optional. Valid values: `E` (Experience), `C` (CCA), `P` (Project).
+- Leave blank to list all records.
+ 
+Example:
+```text
+list C
+```
+ 
+Expected output:
+```text
+Here is a list of C records.
+1. [C] Chess Club
+2. [C] Dance Club
+--------------------
+```
+ 
 ---
 
 ### Adding a project : `project`
@@ -205,7 +229,7 @@ Records saved to file
 ```
 ---
 
-### Editing a user: `editUser`
+### Editing a user: `edituser`
 
 Edits current user attribute which is displayed in resume.
 
@@ -292,6 +316,56 @@ Bullet 3 moved to position 1 in record 1.
 --------------------
 ```
 
+---
+
+### Sorting records by title : `sort`
+Sorts all records alphabetically by title.
+ 
+Format:
+`sort`
+ 
+Example:
+```text
+sort
+```
+ 
+Expected output:
+```text
+--------------------
+Records sorted alphabetically by title.
+--------------------
+```
+ 
+---
+
+### Generating resume : `generate`
+Displays a formatted resume view with your user information and all records grouped by type (CCA, Experience, Project).
+ 
+Format:
+`generate`
+ 
+Example:
+```text
+generate
+```
+ 
+Expected output:
+```text
+John
+Number: 91234567
+Email: john@example.com
+--------------------
+Cca
+--------------------
+[C] Chess Club
+  Role: President | Tech: None
+  2023-01 to 2024-01
+--------------------
+Experience
+--------------------
+...
+```
+ 
 ---
 
 ### Exiting the program : `bye`
