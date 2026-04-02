@@ -171,6 +171,13 @@ public class Record {
         logger.info("Bullet added successfully to record: " + title);
     }
 
+    /**
+     * Deletes a bullet by 0-based index from this record.
+     *
+     * @param bulletIndex 0-based bullet index.
+     * @return Removed bullet text.
+     * @throws IndexOutOfBoundsException If bullet index is invalid.
+     */
     public String deleteBullet(int bulletIndex) {
         assert bullets != null : "Bullets list should not be null";
 

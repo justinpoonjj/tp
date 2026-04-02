@@ -15,11 +15,28 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 import seedu.duke.exceptions.ResumakeException;
 
+/**
+ * Handles persistent storage of records in a flat file.
+ */
 public class Storage {
     private static final Logger logger = Logger.getLogger(Storage.class.getName());
     private static final String filepath = "records.txt";
-    private final Ui ui = new Ui();
+    private final Ui ui;
 
+    public Storage() {
+        this(new Ui());
+    }
+
+    public Storage(Ui ui) {
+        this.ui = ui == null ? new Ui() : ui;
+    }
+
+    /**
+     * Saves all records to the default storage file.
+     *
+     * @param list Current record list.
+     * @throws ResumakeException If file creation or write fails.
+     */
     public void saveToFile(RecordList list) throws ResumakeException {
         logger.info("Saving records to file: " + filepath);
         Path path = Paths.get(filepath);
@@ -39,7 +56,18 @@ public class Storage {
 
             FileWriter fw = new FileWriter(path.toFile());
 
+            // Save User on the first line
+            User user = User.getInstance();
+            if (user != null) {
+                fw.write("USER|" + user.getName() + "|" + user.getNumber() + "|" + user.getEmail() + "\n");
+            }
+
             for (Record record : list) {
+                if (record == null) {
+                    logger.warning("Skipping null record.");
+                    continue;
+                }
+
                 String keyword = getKeyword(record.getRecordType());
                 if (keyword == null) {
                     logger.warning("Skipping unknown record type: " + record.getRecordType());
@@ -74,6 +102,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads records from the provided storage file path.
+     *
+     * @param filepath Path to the storage file.
+     * @return Loaded records as a {@link RecordList}.
+     * @throws ResumakeException If file setup or read fails.
+     */
     public RecordList loadFromFile(String filepath) throws ResumakeException {
         logger.info("Loading records from file: " + filepath);
         assert filepath != null && !filepath.isBlank() : "filepath should not be blank";
@@ -105,6 +140,37 @@ public class Storage {
 
         try {
             Scanner sc = new Scanner(file);
+
+            // Load user from first line
+            if (sc.hasNextLine()) {
+                String firstLine = sc.nextLine().strip();
+                if(firstLine.startsWith("USER|")) {
+
+                    String[] parts = firstLine.split("\\|");
+                    if (parts.length == 4) {
+                        try {
+                            User.loadFrom(parts[1], Integer.parseInt(parts[2]), parts[3]);
+                            logger.info("User loaded from file.");
+                        } catch (NumberFormatException e) {
+                            logger.warning("Invalid user data in file.");
+                            User.getInstance();
+                        }
+                    } else {
+                        logger.warning("No valid user data found in first line.");
+                        User.getInstance();
+                    }
+                } else {
+                    User.getInstance();
+                    // first line is not a user line, so process it as a record
+                    Record record = parseRecord(firstLine);
+                    list.add(record);
+                }
+            } else {
+                logger.warning("File is empty. No user loaded.");
+                User.getInstance();
+            }
+
+
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().strip();
 
@@ -131,14 +197,26 @@ public class Storage {
         }
         logger.info("Records loaded successfully");
         ui.showMessage("Loaded records from file.");
+        ui.showLine();
 
         return list;
     }
 
+    /**
+     * Returns the default storage file path.
+     *
+     * @return Default storage file path.
+     */
     public static String getFilepath() {
         return filepath;
     }
 
+    /**
+     * Parses one line from storage into a record object.
+     *
+     * @param line Raw storage line.
+     * @return Parsed record, or null if the line is invalid.
+     */
     private Record parseRecord(String line) {
         assert line != null : "line should not be null";
 
@@ -245,6 +323,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Maps record type code to persistence keyword.
+     *
+     * @param recordType Record type code (for example, P, E, C).
+     * @return Keyword used in file format, or null if unknown.
+     */
     private String getKeyword(String recordType) {
         switch (recordType) {
         case "P":

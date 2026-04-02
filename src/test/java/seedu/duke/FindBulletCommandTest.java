@@ -49,10 +49,9 @@ public class FindBulletCommandTest {
         command.execute(list);
 
         String lineSeparator = System.lineSeparator();
-        String expectedOutput = "[P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
+        String expectedOutput = "1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
                 + lineSeparator
                 + "Bullets:" + lineSeparator
-                + lineSeparator
                 + "  1. Implemented persistent storage with file IO" + lineSeparator;
 
         assertEquals(expectedOutput, outputStream.toString());

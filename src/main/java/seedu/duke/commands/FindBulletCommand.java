@@ -25,6 +25,10 @@ public class FindBulletCommand extends Command {
      * @throws IllegalArgumentException if the keyword is null or blank.
      */
     public FindBulletCommand(String keyword) {
+        this(keyword, new Ui());
+    }
+
+    public FindBulletCommand(String keyword, Ui ui) {
         if (keyword == null) {
             throw new IllegalArgumentException("Keyword cannot be null");
         }
@@ -35,7 +39,7 @@ public class FindBulletCommand extends Command {
         }
 
         this.keyword = trimmedKeyword;
-        this.ui = new Ui();
+        this.ui = ui == null ? new Ui() : ui;
 
         assert this.ui != null : "Ui should be initialized";
         assert this.keyword != null && !this.keyword.isBlank() : "Keyword should not be blank";
@@ -66,8 +70,10 @@ public class FindBulletCommand extends Command {
 
             boolean hasMatch = false;
             String lowerKeyword = keyword.toLowerCase();
+            int recordDisplayIndex = 0;
 
             for (Record record : list) {
+                recordDisplayIndex++;
                 assert record != null : "Record in RecordList should not be null";
 
                 if (record == null) {
@@ -98,9 +104,8 @@ public class FindBulletCommand extends Command {
 
                 if (matchCount > 0) {
                     hasMatch = true;
-                    System.out.println(record);
+                    System.out.println(recordDisplayIndex + ". " + record);
                     System.out.println("Bullets:");
-                    System.out.println();
                     System.out.print(bulletOutput);
                 }
             }

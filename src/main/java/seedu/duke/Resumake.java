@@ -22,13 +22,8 @@ public class Resumake {
      */
     public Resumake() {
         ui = new Ui();
-        storage = new Storage();
+        storage = new Storage(ui);
         list = new RecordList();
-        try {
-            list = storage.loadFromFile(Storage.getFilepath());
-        } catch (Exception e) {
-            ui.showLoadingError();
-        }
     }
 
     /**
@@ -40,11 +35,16 @@ public class Resumake {
      */
     public void run() {
         ui.greetings();
+        try {
+            list = storage.loadFromFile(Storage.getFilepath());
+        } catch (Exception e) {
+            ui.showLoadingError();
+        }
         boolean isExit = false;
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                Command c = Parser.parse(fullCommand);
+                Command c = Parser.parse(fullCommand, ui);
                 if (c == null) {
                     ui.showError("Unknown command.");
                     continue;
@@ -52,6 +52,9 @@ public class Resumake {
                 c.execute(list);
                 storage.saveToFile(list);
                 isExit = c.isExit();
+            } catch (java.util.NoSuchElementException e) {
+                ui.showError(e.getMessage());
+                break;
             } catch (ResumakeException e) {
                 ui.showError(e.getMessage());
             }
