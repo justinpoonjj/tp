@@ -101,6 +101,12 @@ Previously, multiple components created their own UI instances. This increased c
    - Kept backward-compatible constructor overloads to avoid feature regressions during refactor.
    - Benefit: cleaner dependency management and better long-term testability.
 
+5. **Expanded automated coverage for runtime + I/O defensive paths** ([#104](https://github.com/AY2526S2-CS2113-F09-2/tp/pull/104))
+   - Added integration-focused tests for `Resumake` run loop to cover startup/exit and invalid-input error handling flow.
+   - Expanded `Ui` tests to cover output helpers (`showLine`, `showMessage`, `showLoadingError`) beyond greeting/read basics.
+   - Added `Storage` defensive tests for malformed user metadata, first-line record fallback, and unknown record type skip behavior.
+   - Benefit: reduces regression risk in startup, console interaction, and persistence edge cases shared across the whole team codebase.
+
 ### Contributions to the User Guide (UG)
 
 - Added **Quick Navigation** to improve discoverability of commands.
@@ -118,6 +124,7 @@ Previously, multiple components created their own UI instances. This increased c
 - Set up the GitHub team organization and repository.
 - Added Quick Navigation structure in UG for team documentation quality.
 - Helped align command documentation with implemented behavior before release checks.
+- Strengthened team-wide confidence in core flows by adding regression tests for app runtime, UI output consistency, and storage defensive behavior.
 
 ### Contributions beyond the project team
 
