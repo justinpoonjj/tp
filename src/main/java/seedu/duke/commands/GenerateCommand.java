@@ -47,7 +47,7 @@ public class GenerateCommand extends Command {
 
             for (Record record : list) {
                 if (record.getRecordType().equals(charType)) {
-                    logger.info("Executing ShowCommand with Index " + index);
+                    logger.info("Printing with Index " + index);
 
                     assert list != null : "RecordList should not be null";
 

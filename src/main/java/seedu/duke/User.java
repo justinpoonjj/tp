@@ -2,6 +2,18 @@ package seedu.duke;
 
 import seedu.duke.exceptions.ResumakeException;
 
+/**
+ * Represents the user's personal details in the application.
+ *
+ * <p>This class stores the user's name, phone number, and email address,
+ * and provides methods to initialize, load, retrieve, and edit these fields.
+ * It follows the singleton pattern so that only one user instance exists
+ * throughout the program.
+ *
+ * <p>The class also includes input validation for editable fields and
+ * interactive prompting methods for first-time user initialization.
+ */
+
 public class User {
     private static User instance;
     private static final Ui ui = new Ui();
@@ -45,6 +57,9 @@ public class User {
             break;
         case "number":
             try {
+                if (value == null || value.isBlank()) {
+                    throw new NumberFormatException("Number cannot be blank");
+                }
                 int parsedNumber = Integer.parseInt(value.trim());
                 if (parsedNumber <= 0) {
                     throw new NumberFormatException("Number must be positive");
@@ -123,4 +138,5 @@ public class User {
         String normalized = email.trim();
         return normalized.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
     }
+
 }

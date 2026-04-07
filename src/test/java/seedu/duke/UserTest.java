@@ -1,18 +1,51 @@
 package seedu.duke;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.exceptions.ResumakeException;
 
+/**
+ * Contains unit tests for the {@code User} class.
+ *
+ * <p>These tests verify that:
+ * <ul>
+ *     <li>The singleton user can be loaded and accessed correctly.</li>
+ *     <li>Valid edits to name, number, and email update the stored user data.</li>
+ *     <li>Invalid edits throw {@code ResumakeException} with appropriate messages.</li>
+ *     <li>Input trimming and validation logic behave as expected for supported fields.</li>
+ * </ul>
+ *
+ * <p>Interactive prompt-based methods such as {@code userInit()} and the private prompt helpers
+ * are not directly unit tested here because they depend on console input through {@code Ui}.
+ */
 public class UserTest {
 
     @BeforeEach
     public void setUp() {
         User.loadFrom("John", 91234567, "john@example.com");
+    }
+
+    @Test
+    public void loadFrom_validData_getInstanceReturnsLoadedUser() {
+        User user = User.getInstance();
+
+        assertEquals("John", user.getName());
+        assertEquals(91234567, user.getNumber());
+        assertEquals("john@example.com", user.getEmail());
+    }
+
+    @Test
+    public void getInstance_calledTwice_returnsSameInstance() {
+        User first = User.getInstance();
+        User second = User.getInstance();
+
+        assertSame(first, second);
     }
 
     @Test
@@ -25,6 +58,35 @@ public class UserTest {
     }
 
     @Test
+    public void editField_validName_trimsWhitespace() throws Exception {
+        User user = User.getInstance();
+
+        user.editField("name", "  Jane Doe  ");
+
+        assertEquals("Jane Doe", user.getName());
+    }
+
+    @Test
+    public void editField_blankName_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("name", "   "));
+
+        assertEquals("Please enter a valid name.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_nullName_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("name", null));
+
+        assertEquals("Please enter a valid name.", ex.getMessage());
+    }
+
+    @Test
     public void editField_validNumber_updatesNumber() throws Exception {
         User user = User.getInstance();
 
@@ -34,17 +96,42 @@ public class UserTest {
     }
 
     @Test
-    public void editField_invalidNumber_throwsResumakeException() {
+    public void editField_validNumber_trimsWhitespace() throws Exception {
         User user = User.getInstance();
 
-        assertThrows(ResumakeException.class, () -> user.editField("number", "not-a-number"));
+        user.editField("number", "  88888888  ");
+
+        assertEquals(88888888, user.getNumber());
     }
 
     @Test
-    public void editField_unknownField_throwsResumakeException() {
+    public void editField_invalidNumberText_throwsResumakeException() {
         User user = User.getInstance();
 
-        assertThrows(ResumakeException.class, () -> user.editField("github", "octocat"));
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("number", "not-a-number"));
+
+        assertEquals("Please enter a valid number.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_zeroNumber_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("number", "0"));
+
+        assertEquals("Please enter a valid number.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_negativeNumber_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("number", "-5"));
+
+        assertEquals("Please enter a valid number.", ex.getMessage());
     }
 
     @Test
@@ -54,5 +141,55 @@ public class UserTest {
         user.editField("email", "jane@example.com");
 
         assertEquals("jane@example.com", user.getEmail());
+    }
+
+    @Test
+    public void editField_validEmail_trimsWhitespace() throws Exception {
+        User user = User.getInstance();
+
+        user.editField("email", "  jane@example.com  ");
+
+        assertEquals("jane@example.com", user.getEmail());
+    }
+
+    @Test
+    public void editField_invalidEmail_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("email", "invalid-email"));
+
+        assertEquals("Please enter a valid email.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_blankEmail_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("email", "   "));
+
+        assertEquals("Please enter a valid email.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_nullEmail_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("email", null));
+
+        assertEquals("Please enter a valid email.", ex.getMessage());
+    }
+
+    @Test
+    public void editField_unknownField_throwsResumakeException() {
+        User user = User.getInstance();
+
+        ResumakeException ex = assertThrows(ResumakeException.class,
+                () -> user.editField("github", "octocat"));
+
+        assertTrue(ex.getMessage().contains("Unknown field: github"));
+        assertTrue(ex.getMessage().contains("Use name, number, or email."));
     }
 }
