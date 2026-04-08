@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,6 +11,11 @@ import seedu.duke.commands.AddBulletCommand;
 import seedu.duke.recordtype.Record;
 
 public class AddBulletCommandTest {
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
+
     @Test
     public void addBulletToProjectTest() {
         RecordList list = new RecordList();

@@ -74,7 +74,7 @@ public class Ui {
     }
 
     /**
-     * Displays an error message to the user.
+     * Displays Error.
      *
      * @param message The error message to be displayed.
      */

@@ -92,5 +92,9 @@ public class GenerateCommand extends Command {
                 index++;
             }
         }
+        ui.showMessage("Skills");
+        ui.showLine();
+        ui.showMessage(user.getSkillsAsString());
+        ui.showLine();
     }
 }

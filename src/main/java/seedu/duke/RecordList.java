@@ -14,8 +14,16 @@ public class RecordList implements Iterable<Record> {
         this.size = 0;
     }
 
-    public void add(Record record){
+    public void add(Record record) {
         list.add(record);
+
+        if (record != null) {
+            String tech = record.getTech();
+            if (tech != null && !tech.trim().isEmpty()) {
+                User.getInstance().addSkills(tech);
+            }
+        }
+
         size++;
     }
 
@@ -32,8 +40,16 @@ public class RecordList implements Iterable<Record> {
     }
 
     public void removeIndex(int index) {
+        Record record = list.get(index);
+
+        String tech = record.getTech();
+        if (tech != null && !tech.trim().isEmpty()) {
+            User user = User.getInstance();
+            user.removeSkills(tech);
+        }
+
         list.remove(index);
-        this.size--;
+        size--;
     }
 
     public void sort(Comparator<Record> comparator) {

@@ -2,6 +2,7 @@ package seedu.duke;
 
 import java.time.YearMonth;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.commands.DeleteCommand;
@@ -13,6 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteCommandTest {
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
+
     @Test
     public void execute_deleteRecord_success() throws Exception {
         RecordList list = new RecordList();

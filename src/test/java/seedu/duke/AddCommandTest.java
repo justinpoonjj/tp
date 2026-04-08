@@ -2,6 +2,7 @@ package seedu.duke;
 
 import java.time.YearMonth;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,6 +11,11 @@ import seedu.duke.exceptions.ResumakeException;
 import seedu.duke.recordtype.Record;
 
 public class AddCommandTest {
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
+
     @Test
     public void addedToList() throws ResumakeException {
         RecordList list = new RecordList();

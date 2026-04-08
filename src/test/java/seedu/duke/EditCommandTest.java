@@ -1,5 +1,6 @@
 package seedu.duke;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.YearMonth;
@@ -11,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EditCommandTest {
+
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
 
     @Test
     public void execute_editTitle_titleUpdated() {

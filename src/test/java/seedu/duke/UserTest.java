@@ -192,4 +192,109 @@ public class UserTest {
         assertTrue(ex.getMessage().contains("Unknown field: github"));
         assertTrue(ex.getMessage().contains("Use name, number, or email."));
     }
+
+    @Test
+    public void getSkillsAsString_noSkills_returnsNoSkillsMessage() {
+        User user = User.getInstance();
+
+        assertEquals("No skills added yet.", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_oneSkill_skillAppearsInString() {
+        User user = User.getInstance();
+
+        user.addSkills("Java");
+
+        assertEquals("Java", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_sameSkillTwice_skillOnlyAppearsOnceInString() {
+        User user = User.getInstance();
+
+        user.addSkills("Java");
+        user.addSkills("Java");
+
+        assertEquals("Java", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_wrappedDoubleQuotes_quotesRemoved() {
+        User user = User.getInstance();
+
+        user.addSkills("\"JavaScript\"");
+
+        assertEquals("JavaScript", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_wrappedSingleQuotes_quotesRemoved() {
+        User user = User.getInstance();
+
+        user.addSkills("'Python'");
+
+        assertEquals("Python", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_wrappedCurlyQuotes_quotesRemoved() {
+        User user = User.getInstance();
+
+        user.addSkills("“C++”");
+
+        assertEquals("C++", user.getSkillsAsString());
+    }
+
+    @Test
+    public void addSkills_extraWhitespaceAndQuotes_cleansCorrectly() {
+        User user = User.getInstance();
+
+        user.addSkills("   \"Go\"   ");
+
+        assertEquals("Go", user.getSkillsAsString());
+    }
+
+    @Test
+    public void removeSkills_skillAddedOnce_skillRemovedCompletely() {
+        User user = User.getInstance();
+
+        user.addSkills("Java");
+        user.removeSkills("Java");
+
+        assertEquals("No skills added yet.", user.getSkillsAsString());
+    }
+
+    @Test
+    public void removeSkills_skillAddedTwice_removedOnce_skillStillExists() {
+        User user = User.getInstance();
+
+        user.addSkills("Java");
+        user.addSkills("Java");
+        user.removeSkills("Java");
+
+        assertEquals("Java", user.getSkillsAsString());
+    }
+
+    @Test
+    public void removeSkills_wrappedQuotedSkill_removesCorrectly() {
+        User user = User.getInstance();
+
+        user.addSkills("\"Rust\"");
+        user.removeSkills("\"Rust\"");
+
+        assertEquals("No skills added yet.", user.getSkillsAsString());
+    }
+
+    @Test
+    public void getSkillsAsString_multipleSkills_containsAllSkills() {
+        User user = User.getInstance();
+
+        user.addSkills("Java");
+        user.addSkills("Python");
+
+        String result = user.getSkillsAsString();
+        assertTrue(result.contains("Java"));
+        assertTrue(result.contains("Python"));
+    }
 }

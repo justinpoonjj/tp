@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.commands.FindBulletCommand;
@@ -17,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FindBulletCommandTest {
     private final PrintStream originalOut = System.out;
+
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
 
     @AfterEach
     public void restoreSystemStreams() {

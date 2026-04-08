@@ -1,5 +1,8 @@
 package seedu.duke;
 
+import java.util.HashMap;
+import java.util.logging.Logger;
+
 import seedu.duke.exceptions.ResumakeException;
 
 /**
@@ -15,9 +18,11 @@ import seedu.duke.exceptions.ResumakeException;
  */
 
 public class User {
-    private static User instance;
+    private static final Logger logger = Logger.getLogger(User.class.getName());
     private static final Ui ui = new Ui();
+    private static User instance;
 
+    private final HashMap<String, Integer> skills;
     private String name;
     private int number;
     private String email;
@@ -26,6 +31,7 @@ public class User {
         this.name = name;
         this.number = number;
         this.email = email;
+        this.skills = new HashMap<>();
     }
 
     public static void userInit() {
@@ -91,6 +97,94 @@ public class User {
 
     public String getEmail(){
         return this.email;
+    }
+
+    /**
+     * Returns all current skills as a comma-separated string.
+     *
+     * @return A string containing all current skills, or a message if no skills exist.
+     */
+    public String getSkillsAsString() {
+        logger.info("Printing Skills");
+        if (this.skills.isEmpty()) {
+            return "No skills added yet.";
+        }
+        return String.join(", ", this.skills.keySet());
+    }
+
+    /**
+     * Adds a skill to the user's skill map.
+     * If the skill already exists, its count is incremented by one.
+     * Surrounding quotation marks are removed before storing.
+     *
+     * @param skill The skill to be added.
+     */
+    public void addSkills(String skill) {
+        logger.info("Adding skill: " + skill);
+        skill = removeQuotes(skill);
+        if (this.skills.containsKey(skill)) {
+            int newcount = this.skills.get(skill) + 1;
+            this.skills.put(skill, newcount);
+        } else {
+            this.skills.put(skill, 1);
+        }
+    }
+
+    /**
+     * Removes one occurrence of a skill from the user's skill map.
+     * If the skill count becomes zero, the skill is removed entirely.
+     * If the skill does not exist, no action is taken.
+     * Surrounding quotation marks are removed before processing.
+     *
+     * @param skill The skill to be removed.
+     */
+    public void removeSkills(String skill){
+        logger.info("Removing skill: " + skill);
+        skill = removeQuotes(skill);
+        if (!this.skills.containsKey(skill)) {
+            return;
+        }
+
+        int newcount = this.skills.get(skill) - 1;
+        if (newcount == 0) {
+            this.skills.remove(skill);
+        } else {
+            this.skills.put(skill, newcount);
+        }
+    }
+
+    /**
+     * Removes matching surrounding quotation marks from a skill string.
+     * Supports double quotes, curly quotes, and single quotes.
+     *
+     * @param skill The skill string to be cleaned.
+     * @return The cleaned skill string without surrounding quotation marks,
+     *         or null if the input is null.
+     */
+    private static String removeQuotes(String skill) {
+        if (skill == null) {
+            return null;
+        }
+
+        skill = skill.trim();
+
+        while (skill.length() >= 2) {
+            char first = skill.charAt(0);
+            char last = skill.charAt(skill.length() - 1);
+
+            boolean isWrapped =
+                    (first == '"' && last == '"') ||
+                            (first == '“' && last == '”') ||
+                            (first == '\'' && last == '\'');
+
+            if (!isWrapped) {
+                break;
+            }
+
+            skill = skill.substring(1, skill.length() - 1).trim();
+        }
+
+        return skill;
     }
 
     private static String promptForName() {
