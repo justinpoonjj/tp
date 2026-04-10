@@ -353,6 +353,28 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_addbulletZeroIndex_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("addbullet 0 / test bullet"));
+    }
+
+    @Test
+    public void parse_edituserMissingField_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("edituser"));
+    }
+
+    @Test
+    public void parse_projectBlankRole_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse(
+                "project Demo /role /tech Java /from 2026-01 /to 2026-02"));
+    }
+
+    @Test
+    public void parse_projectBlankTech_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse(
+                "project Demo /role Developer /tech /from 2026-01 /to 2026-02"));
+    }
+
+    @Test
     public void parse_editbulletBlankNewBullet_returnsEditBulletCommand() throws ResumakeException {
         Command command = Parser.parse("editbullet 1 1 /   ");
         assertInstanceOf(EditBulletCommand.class, command);

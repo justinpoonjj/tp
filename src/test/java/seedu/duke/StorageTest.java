@@ -142,6 +142,29 @@ public class StorageTest {
     }
 
     @Test
+    public void loadFromFile_invalidNonUserFirstLine_skipsLineAndParsesRemaining() throws Exception {
+        User.loadFrom("Existing User", 99999999, "existing@example.com");
+        Storage storage = new Storage(new SilentUi());
+        Path tempDir = Files.createTempDirectory("storage-test-invalid-first-line");
+        Path tempFile = tempDir.resolve("records.txt");
+        List<String> lines = List.of(
+                "invalid line without required fields",
+                "project Good /role Dev /tech Java /from 2026-01 /to 2026-02"
+        );
+        Files.write(tempFile, lines);
+
+        try {
+            RecordList loaded = storage.loadFromFile(tempFile.toString());
+
+            assertEquals(1, loaded.getSize());
+            assertEquals("Good", loaded.getRecord(0).getTitle());
+        } finally {
+            Files.deleteIfExists(tempFile);
+            Files.deleteIfExists(tempDir);
+        }
+    }
+
+    @Test
     public void loadFromFile_invalidUserNumber_fallsBackToExistingUser() throws Exception {
         User.loadFrom("Fallback User", 12345678, "fallback@example.com");
         Storage storage = new Storage(new SilentUi());

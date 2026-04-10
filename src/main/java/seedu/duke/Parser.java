@@ -337,7 +337,7 @@ public class Parser {
                 }
                 String bullet = bulletPart.substring(1).trim();
                 return new AddBulletCommand(index, bullet, effectiveUi);
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException e) {
                 throw new ResumakeException("Please follow the correct format");
             }
 
@@ -400,6 +400,9 @@ public class Parser {
             return new GenerateCommand(effectiveUi);
 
         case "edituser":
+            if (split.length < 2 || split[1].trim().isEmpty()) {
+                throw new ResumakeException("Please follow the correct format");
+            }
             String field = split[1].trim(); // "name", "number", or "email"
             return new EditUserCommand(field, effectiveUi);
 
@@ -482,13 +485,17 @@ public class Parser {
         String fromPart = args.substring(fromIndex + 5, toIndex).trim();
         String toPart = args.substring(toIndex + 3).trim();
 
+        if (titlePart.isEmpty() || rolePart.isEmpty() || techPart.isEmpty()) {
+            throw new ResumakeException("Title, role, and tech cannot be empty.");
+        }
+
         logger.fine("Parsed title: " + titlePart);
 
         YearMonth from = parseYearMonth(fromPart, "from");
         YearMonth to = parseYearMonth(toPart, "to");
 
         if (to.isBefore(from)) {
-            throw new ResumakeException("End data cannot be before start date");
+            throw new ResumakeException("End date cannot be before start date");
         }
 
         return new ParsedFields(titlePart, rolePart, techPart, from, to);
@@ -506,7 +513,7 @@ public class Parser {
         try {
             return YearMonth.parse(input.trim());
         } catch (DateTimeException e) {
-            throw new ResumakeException(fieldName + "date must be in yyyy-MM format");
+            throw new ResumakeException(fieldName + " date must be in yyyy-MM format");
         }
     }
 }

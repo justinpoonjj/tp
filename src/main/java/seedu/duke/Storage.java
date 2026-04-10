@@ -161,9 +161,12 @@ public class Storage {
                     }
                 } else {
                     User.getInstance();
-                    // first line is not a user line, so process it as a record
                     Record record = parseRecord(firstLine);
-                    list.add(record);
+                    if (record != null) {
+                        list.add(record);
+                    } else {
+                        logger.warning("Skipping invalid first record line: " + firstLine);
+                    }
                 }
             } else {
                 logger.warning("File is empty. No user loaded.");
