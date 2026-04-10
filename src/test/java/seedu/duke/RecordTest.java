@@ -136,4 +136,15 @@ public class RecordTest {
         assertEquals("C", record.getBullets().get(1));
         assertEquals("A", record.getBullets().get(2));
     }
+
+    @Test
+    public void constructor_emptyTitle_throwsException() {
+        assertThrows(AssertionError.class, () -> new Record(
+                "",
+                "Developer",
+                "Java",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        ));
+    }
 }
