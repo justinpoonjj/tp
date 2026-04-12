@@ -30,7 +30,7 @@ public class AddBulletCommand extends Command {
     }
 
     public AddBulletCommand(int index, String bullet, Ui ui) {
-        if (index < 0) {
+        if (index <= 0) {
             throw new IllegalArgumentException("Record index must be non-negative.");
         }
         if (bullet == null || bullet.trim().isEmpty()) {
