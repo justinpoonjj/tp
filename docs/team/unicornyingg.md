@@ -8,8 +8,6 @@ My main contributions focused on improving reliability in record/bullet mutation
 
 ### Code contributed
 - [RepoSense link](https://nus-cs2113-ay2526-s2.github.io/tp-dashboard/?search=&sort=groupTitle&sortWithin=title&timeframe=commit&mergegroup=&groupSelect=groupByRepos&breakdown=true&checkedFileTypes=docs~functional-code~test-code~other&since=2026-02-20T00%3A00%3A00&filteredFileName=&tabOpen=true&tabType=authorship&tabAuthor=Unicornyingg&tabRepo=AY2526S2-CS2113-F09-2%2Ftp%5Bmaster%5D&authorshipIsMergeGroup=false&authorshipFileTypes=docs~functional-code~test-code~other&authorshipIsBinaryFileTypeChecked=false&authorshipIsIgnoredFilesChecked=false)
-- RepoSense snapshot (2026-03-06 to 2026-04-13): `63` commits, `+2641 / -397` lines changed.
-- By file type: `docs (+1551 / -145)`, `functional-code (+755 / -220)`, `test-code (+292 / -31)`, `other (+43 / -1)`.
 
 ### Enhancements implemented
 1. **Deletion and bullet mutation reliability**
@@ -60,7 +58,7 @@ My main contributions focused on improving reliability in record/bullet mutation
 ### Contributions beyond the project team
 - No major beyond-team contributions are claimed in this PPP.
 
-## Optional: Contributions to the Developer Guide (extracts)
+## Contributions to the Developer Guide
 - **Storage Format and Persistence**  
   Added details on the `records.txt` structure, `USER|...` parsing, Base64 bullet encoding/decoding, malformed-line skip behavior, and save-on-change write skipping.
 - **Delete Feature**  
@@ -72,7 +70,7 @@ My main contributions focused on improving reliability in record/bullet mutation
 - **Sequence Diagrams**  
   Updated sequence documentation so flows reflect parser-command dispatch and storage save-skip behavior accurately.
 
-## Optional: Contributions to the User Guide (extracts)
+## Contributions to the User Guide
 - **Deleting a record: `delete`**  
   Added format requirements, index expectations, and expected successful output.
 - **Deleting a bullet: `deletebullet`**  
