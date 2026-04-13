@@ -18,6 +18,7 @@ import seedu.duke.commands.DeleteCommand;
 import seedu.duke.commands.ExitCommand;
 import seedu.duke.commands.FindCommand;
 import seedu.duke.commands.FindBulletCommand;
+import seedu.duke.commands.HelpCommand;
 import seedu.duke.commands.ListCommand;
 import seedu.duke.commands.ShowCommand;
 import seedu.duke.commands.EditCommand;
@@ -306,6 +307,10 @@ public class Parser {
                 return new ListCommand(split[1], effectiveUi);
             }
 
+        case "help":
+            logger.info("Help command detected");
+            return new HelpCommand(effectiveUi);
+
         case "project":
             if (split.length < 2) {
                 throw new ResumakeException("Please follow the correct format");
@@ -446,7 +451,7 @@ public class Parser {
 
         case "edituser":
             if (split.length < 2 || split[1].trim().isEmpty()) {
-                throw new ResumakeException("Please follow the correct format");
+                throw new ResumakeException("Please use the format: edituser FIELD");
             }
             String field = split[1].trim(); // "name", "number", or "email"
             return new EditUserCommand(field, effectiveUi);

@@ -6,10 +6,12 @@ import seedu.duke.recordtype.Experience;
 import seedu.duke.recordtype.Project;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.YearMonth;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import seedu.duke.exceptions.ResumakeException;
@@ -62,7 +64,6 @@ public class Storage {
 
             Files.writeString(path, serializedContent);
             logger.info("Records saved successfully");
-            ui.showMessage("Records saved to file.");
         } catch (IOException e) {
             logger.severe("Failed to save records: " + e.getMessage());
             throw new ResumakeException("Failed to save records to file.");
@@ -221,7 +222,7 @@ public class Storage {
             if (!record.getBullets().isEmpty()) {
                 line.append(" /bullets ");
                 for (int i = 0; i < record.getBullets().size(); i++) {
-                    line.append(record.getBullets().get(i));
+                    line.append(encodeBulletForStorage(record.getBullets().get(i)));
                     if (i < record.getBullets().size() - 1) {
                         line.append(" ;; ");
                     }
@@ -333,7 +334,7 @@ public class Storage {
                 String[] bullets = bulletsPart.split("\\s*;;\\s*");
                 for (String bullet : bullets) {
                     if (!bullet.isBlank()) {
-                        record.addBullet(bullet.trim());
+                        record.addBullet(decodeBulletFromStorage(bullet.trim()));
                     }
                 }
             }
@@ -363,5 +364,20 @@ public class Storage {
         default:
             return null;
         }
+    }
+
+    private String encodeBulletForStorage(String bullet) {
+        String encoded = Base64.getEncoder().encodeToString(bullet.getBytes(StandardCharsets.UTF_8));
+        return "b64:" + encoded;
+    }
+
+    private String decodeBulletFromStorage(String storedBullet) {
+        if (!storedBullet.startsWith("b64:")) {
+            return storedBullet;
+        }
+
+        String encoded = storedBullet.substring(4);
+        byte[] decoded = Base64.getDecoder().decode(encoded);
+        return new String(decoded, StandardCharsets.UTF_8);
     }
 }

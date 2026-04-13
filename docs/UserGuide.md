@@ -12,6 +12,22 @@ ResuMake runs in the terminal and stores data in `records.txt`.
 
 ---
 
+## Why ResuMake
+
+Many users currently manage resume content in free-form tools (Word docs, Notion pages, Google Docs, or generic notes).
+Those tools are flexible, but they do not enforce consistent structure, which makes content harder to maintain over time.
+
+ResuMake solves this by:
+
+- enforcing a consistent command format for each record (`title`, `role`, `tech`, `from`, `to`),
+- supporting quick edits and bullet operations without manual reformatting,
+- enabling fast filtering and keyword search across records,
+- generating grouped resume-ready output on demand.
+
+Compared to generic document tools, ResuMake is optimized for repeatable resume-content workflows, not free-form writing.
+
+---
+
 ## Target User Profile
 
 ResuMake is intended for users who frequently maintain resume content, especially:
@@ -41,6 +57,7 @@ Assumed user skill level:
 
 ## Quick Navigation
 
+- [help](#viewing-available-commands--help)
 - [list](#viewing-records--list)
 - [project](#adding-a-project--project)
 - [experience](#adding-an-experience--experience)
@@ -70,7 +87,33 @@ Assumed user skill level:
 > - Date format is `yyyy-MM`.
 > - For `project`, `experience`, and `cca`, fields must appear in this order: `/role`, `/tech`, `/from`, `/to`.
 > - For `list TYPE`, valid values are uppercase `E`, `C`, `P`.
-> - After command execution, ResuMake writes to storage and prints `Records saved to file.`
+> - ResuMake auto-saves to `records.txt` after command execution.
+
+---
+
+### Viewing available commands : `help`
+
+Shows all available commands with their formats and short descriptions.
+
+Format:
+`help`
+
+Example:
+```text
+help
+```
+
+Expected output (example):
+```text
+--------------------
+Available commands:
+help - Show all available commands.
+list [TYPE] - List records; TYPE can be E, C, or P.
+find KEYWORD - Find records by keyword.
+...
+--------------------
+Records saved to file.
+```
 
 ---
 
@@ -94,7 +137,6 @@ Expected output (example):
 Here is a list of C records.
 1. [C] Chess Club | role: President | tech: N/A | from: 2023-01 | to: 2024-01
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -116,7 +158,6 @@ Expected output:
 --------------------
 [P] Capo CLI added
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -138,7 +179,6 @@ Expected output:
 --------------------
 [E] Google added
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -160,7 +200,6 @@ Expected output:
 --------------------
 [C] NUS Hackers added
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -184,7 +223,6 @@ Showing record 1
   Bullets:
   1. Implemented persistent storage with file IO
 --------------------
-Records saved to file.
 ```
 
 If no bullets exist, it prints:
@@ -294,7 +332,6 @@ Expected output (example):
 Matching records:
 1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -317,7 +354,6 @@ Expected output (example):
 1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03
 Bullets:
   1. Implemented persistent storage with file IO
-Records saved to file.
 ```
 
 ---
@@ -339,7 +375,6 @@ Expected output:
 --------------------
 Added bullet to: Capo CLI
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -369,7 +404,6 @@ Expected output:
 --------------------
 Record 1 has been updated.
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -394,7 +428,6 @@ editbullet 1 2 / Improved performance by optimizing algorithms
 Expected output:
 ```text
 Edited bullet 2 in record 1
-Records saved to file.
 ```
 
 ---
@@ -418,7 +451,6 @@ Expected output (example):
 Current name: Alex Tan
 Enter new name:
 Updated name to: Alexis Tan
-Records saved to file.
 ```
 
 ### Moving a bullet : `movebullet`
@@ -438,7 +470,6 @@ Expected output:
 --------------------
 Bullet 3 moved to position 1 in record 1.
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -460,7 +491,6 @@ delete 1
 Expected output:
 ```text
 Deleted record 1
-Records saved to file.
 ```
 
 ---
@@ -482,7 +512,6 @@ deletebullet 1 2
 Expected output:
 ```text
 Deleted bullet 2 from record 1
-Records saved to file.
 ```
 
 ---
@@ -504,7 +533,6 @@ Expected output:
 --------------------
 Records sorted alphabetically by title.
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -536,7 +564,6 @@ Cca
 Experience
 --------------------
 ...
-Records saved to file.
 ```
 
 ---
@@ -558,7 +585,6 @@ Expected output:
 --------------------
 bye
 --------------------
-Records saved to file.
 ```
 
 ---
@@ -583,6 +609,7 @@ Records saved to file.
 
 | Command | Format |
 |---|---|
+| `help` | `help` |
 | `list` | `list` or `list TYPE` |
 | `project` | `project TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM` |
 | `experience` | `experience TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM` |

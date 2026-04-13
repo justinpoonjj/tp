@@ -1,6 +1,7 @@
 package seedu.duke;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.commands.EditUserCommand;
+import seedu.duke.exceptions.ResumakeException;
 
 public class EditUserCommandTest {
     private final InputStream originalIn = System.in;
@@ -52,5 +54,24 @@ public class EditUserCommandTest {
         cmd.execute(new RecordList());
 
         assertEquals("jane@test.com", User.getInstance().getEmail());
+    }
+
+    @Test
+    public void execute_editEmail_retryThenSuccess_updatesEmail() throws Exception {
+        System.setIn(new ByteArrayInputStream("bad\njane@test.com\n".getBytes()));
+
+        EditUserCommand cmd = new EditUserCommand("email");
+        cmd.execute(new RecordList());
+
+        assertEquals("jane@test.com", User.getInstance().getEmail());
+    }
+
+    @Test
+    public void execute_editEmail_exhaustAttempts_throwsResumakeException() throws Exception {
+        System.setIn(new ByteArrayInputStream("bad\nbad\nbad\nbad\n".getBytes()));
+
+        EditUserCommand cmd = new EditUserCommand("email");
+        assertThrows(ResumakeException.class, () -> cmd.execute(new RecordList()));
+        assertEquals("john@example.com", User.getInstance().getEmail());
     }
 }

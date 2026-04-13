@@ -10,6 +10,7 @@ import seedu.duke.User;
 import seedu.duke.exceptions.ResumakeException;
 
 public class EditUserCommand extends Command {
+    private static final int MAX_ATTEMPTS = 4;
     private final String field;
     private final Ui ui;
 
@@ -34,11 +35,26 @@ public class EditUserCommand extends Command {
         User user = User.getInstance();
 
         ui.showMessage("Current " + field + ": " + getCurrentValue(user));
-        ui.showMessage("Enter new " + field + ":");
-        String newValue = promptUserField(user);
+        for (int attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+            ui.showMessage("Enter new " + field + ":");
+            String newValue = ui.readCommand();
 
-        user.editField(field, newValue);
-        ui.showMessage("Updated " + field + " to: " + getCurrentValue(user));
+            try {
+                user.editField(field, newValue);
+                ui.showMessage("Updated " + field + " to: " + getCurrentValue(user));
+                return;
+            } catch (ResumakeException e) {
+                int attemptsLeft = MAX_ATTEMPTS - attempt - 1;
+                if (attemptsLeft > 0) {
+                    ui.showError(e.getMessage() + " You have " + attemptsLeft + " more chance"
+                            + (attemptsLeft == 1 ? "" : "s") + ".");
+                } else {
+                    throw new ResumakeException(
+                            "You have exhausted all your attempts. edituser exited. "
+                                    + "If you would like to try editing the user profile, enter \"edituser\" again.");
+                }
+            }
+        }
     }
 
     private String getCurrentValue(User user) {

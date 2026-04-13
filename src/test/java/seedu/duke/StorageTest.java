@@ -62,11 +62,10 @@ public class StorageTest {
 
         List<String> lines = Files.readAllLines(recordsPath);
         assertEquals("USER|Alex|98765432|alex@example.com", lines.get(0));
-        assertEquals(
-                "project Resume Builder /role Developer /tech Java /from 2026-01 /to 2026-03 "
-                        + "/bullets Built parser ;; Wrote tests",
-                lines.get(1)
-        );
+        assertTrue(lines.get(1).startsWith(
+                "project Resume Builder /role Developer /tech Java /from 2026-01 /to 2026-03 /bullets "
+        ));
+        assertTrue(lines.get(1).contains("b64:"));
     }
 
     @Test
@@ -202,6 +201,29 @@ public class StorageTest {
         List<String> lines = Files.readAllLines(recordsPath);
         assertEquals(1, lines.size());
         assertEquals("USER|Alex|98765432|alex@example.com", lines.get(0));
+    }
+
+    @Test
+    public void saveToFile_bulletWithDelimiter_roundTripsAsSingleBullet() throws Exception {
+        User.loadFrom("Alex", 98765432, "alex@example.com");
+        Storage storage = new Storage(new SilentUi());
+        RecordList list = new RecordList();
+        Project project = new Project(
+                "Resume Builder",
+                "Developer",
+                "Java",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        );
+        project.addBullet("first ;; second");
+        list.add(project);
+
+        storage.saveToFile(list);
+        RecordList loaded = storage.loadFromFile(Storage.getFilepath());
+
+        assertEquals(1, loaded.getSize());
+        assertEquals(1, loaded.getRecord(0).getBullets().size());
+        assertEquals("first ;; second", loaded.getRecord(0).getBullets().get(0));
     }
 
     private static class UnknownRecordType extends Record {
