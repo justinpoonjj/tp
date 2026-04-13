@@ -103,7 +103,7 @@ public class DeleteCommand extends Command {
             System.out.println("Deleted record " + userRecordIndex);
         } catch (IndexOutOfBoundsException e) {
             logger.warning("Record delete failed for index=" + userRecordIndex + " (out of bounds)");
-            throw new ResumakeException("Invalid record index");
+            throw new ResumakeException("Invalid record index.");
         }
     }
 
@@ -123,7 +123,7 @@ public class DeleteCommand extends Command {
             } catch (IndexOutOfBoundsException e) {
                 logger.warning("Bullet delete failed for record index=" + userRecordIndex
                         + ", bullet index=" + userBulletIndex + " (bullet out of bounds)");
-                throw new ResumakeException("Invalid bullet index");
+                throw new ResumakeException("Invalid bullet index.");
             }
             logger.info("Bullet delete succeeded for record index=" + userRecordIndex
                     + ", bullet index=" + userBulletIndex);
@@ -131,7 +131,7 @@ public class DeleteCommand extends Command {
         } catch (IndexOutOfBoundsException e) {
             logger.warning("Bullet delete failed for record index=" + userRecordIndex
                     + ", bullet index=" + userBulletIndex + " (record out of bounds)");
-            throw new ResumakeException("Invalid record index");
+            throw new ResumakeException("Invalid record index.");
         }
     }
 }

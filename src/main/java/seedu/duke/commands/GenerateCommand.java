@@ -84,7 +84,7 @@ public class GenerateCommand extends Command {
                         showRecordWithBullets(record, ui);
                     } catch (IllegalArgumentException | IllegalStateException e) {
                         logger.warning("Error generating record output: " + e.getMessage());
-                        ui.showMessage("Error: " + e.getMessage());
+                        ui.showError(e.getMessage());
                     }
 
                     ui.showLine();

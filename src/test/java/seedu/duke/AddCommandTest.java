@@ -57,7 +57,7 @@ public class AddCommandTest {
     @Test
     public void constructor_nullRecord_throwsException() {
         ResumakeException e = assertThrows(ResumakeException.class, () -> new AddCommand(null));
-        assertEquals("Record cannot be null", e.getMessage());
+        assertEquals("Record cannot be null.", e.getMessage());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class AddCommandTest {
         Record record = new EmptyTitleRecord();
 
         ResumakeException e = assertThrows(ResumakeException.class, () -> new AddCommand(record));
-        assertEquals("Record title cannot be empty", e.getMessage());
+        assertEquals("Record title cannot be empty.", e.getMessage());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class AddCommandTest {
         AddCommand cmd = new AddCommand(record);
 
         ResumakeException e = assertThrows(ResumakeException.class, () -> cmd.execute(null));
-        assertEquals("Record list cannot be null", e.getMessage());
+        assertEquals("Record list cannot be null.", e.getMessage());
     }
 
     @Test
@@ -205,6 +205,38 @@ public class AddCommandTest {
         assertEquals(2, record.getBullets().size());
         assertEquals("organized hacknroll", record.getBullets().get(0));
         assertEquals("press esc", record.getBullets().get(1));
+    }
+
+    @Test
+    public void execute_invalidAddBulletsPromptAnswer_promptsAgainAndAddsBullet() throws ResumakeException {
+        provideInput("maybe" + System.lineSeparator()
+                + "y" + System.lineSeparator()
+                + "organized hacknroll" + System.lineSeparator()
+                + "esc" + System.lineSeparator());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(out));
+
+        try {
+            RecordList list = new RecordList();
+            Record record = new Record(
+                    "NUS Hackers",
+                    "Core Member",
+                    "Python",
+                    YearMonth.parse("2025-01"),
+                    YearMonth.parse("2026-01")
+            );
+
+            AddCommand command = new AddCommand(record, new Ui());
+            command.execute(list);
+
+            assertEquals(1, list.getSize());
+            assertEquals(1, record.getBullets().size());
+            assertEquals("organized hacknroll", record.getBullets().get(0));
+            assertTrue(out.toString().contains("Please enter y or n."));
+        } finally {
+            System.setOut(originalOut);
+        }
     }
 
     @Test

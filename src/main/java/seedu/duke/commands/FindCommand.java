@@ -29,12 +29,12 @@ public class FindCommand extends Command {
 
     public FindCommand(String keyword, Ui ui) {
         if (keyword == null) {
-            throw new IllegalArgumentException("Keyword cannot be null");
+            throw new IllegalArgumentException("Keyword cannot be null.");
         }
 
         String trimmedKeyword = keyword.trim();
         if (trimmedKeyword.isEmpty()) {
-            throw new IllegalArgumentException("Keyword cannot be blank");
+            throw new IllegalArgumentException("Keyword cannot be blank.");
         }
 
         this.keyword = trimmedKeyword;
@@ -67,7 +67,7 @@ public class FindCommand extends Command {
 
         try {
             if (list == null) {
-                throw new IllegalArgumentException("RecordList cannot be null");
+                throw new IllegalArgumentException("RecordList cannot be null.");
             }
 
             assert list != null : "RecordList passed to FindCommand should not be null";
