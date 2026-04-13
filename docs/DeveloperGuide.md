@@ -373,6 +373,10 @@ ResuMake provides structured resume-content management in a lightweight CLI:
 | v1.0 | student job applicant | list all my saved projects | quickly review what I already have for applications |
 | v1.0 | student job applicant | view one record with all bullets | check whether the information is complete and accurate |
 | v1.0 | internship applicant | find records by keyword | quickly surface relevant entries for a specific role |
+| v1.0 | fresh graduate | delete outdated or weak bullet points | keep only the most relevant content |
+| v1.0 | fresh graduate | load saved data when the app starts | continue working without re-entering everything |
+| v1.0 | user with many records | sort records by title | scan my content more quickly |
+| v1.0 | applicant editing profile details | update name/number/email | keep generated resume output accurate |
 | v2.0 | internship applicant | filter projects by tag | choose the most relevant projects for a specific internship |
 | v2.0 | internship applicant | export a project's bullet points | paste them directly into my resume or application form |
 | v2.0 | fresh graduate | add start and end dates to a project (accept specific date format) | show a clear timeline of my work |
@@ -380,10 +384,6 @@ ResuMake provides structured resume-content management in a lightweight CLI:
 | v2.0 | career switcher | sort projects by date | review my experience in a meaningful order |
 | v2.0 | fresh graduate | edit each aspect of a project | change projects to be better suited for job applications |
 | v2.0 | student job applicant | generate tags | include skills or industry tags that a project is related to |
-| v1.0 | fresh graduate | delete outdated or weak bullet points | keep only the most relevant content |
-| v1.0 | fresh graduate | load saved data when the app starts | continue working without re-entering everything |
-| v1.0 | user with many records | sort records by title | scan my content more quickly |
-| v1.0 | applicant editing profile details | update name/number/email | keep generated resume output accurate |
 
 ## Non-Functional Requirements
 
