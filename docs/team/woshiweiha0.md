@@ -60,6 +60,8 @@ Given below are my contributions to the project.
 - Helped align command documentation with implemented behavior before release checks.
 - Strengthened team-wide confidence in core flows by adding regression tests for app runtime, UI output consistency, and storage defensive behavior.
 
+<div style="page-break-after: always;"></div>
+
 ### Contributions beyond the project team
 
 - Conducted PE-D for another team and reported a high number of actionable bugs (21), then followed up with peer input to clarify impact and improve fixability.

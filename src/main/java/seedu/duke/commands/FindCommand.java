@@ -70,8 +70,6 @@ public class FindCommand extends Command {
                 throw new IllegalArgumentException("RecordList cannot be null.");
             }
 
-            assert list != null : "RecordList passed to FindCommand should not be null";
-
             ui.showLine();
             ui.showMessage("Matching records:");
 

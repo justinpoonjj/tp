@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.duke.commands.MoveBulletCommand;
@@ -17,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoveBulletCommandTest {
     private final PrintStream originalOut = System.out;
+
+    @BeforeEach
+    public void setUp() {
+        User.loadFrom("John", 91234567, "john@example.com");
+    }
 
     @AfterEach
     public void restoreSystemStreams() {
@@ -64,6 +70,9 @@ public class MoveBulletCommandTest {
 
     @Test
     public void execute_moveBulletSameIndex_noChange() throws ResumakeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
         RecordList list = new RecordList();
         Record record = createRecordWithThreeBullets();
         list.add(record);
@@ -75,6 +84,11 @@ public class MoveBulletCommandTest {
         assertEquals("A", record.getBullets().get(0));
         assertEquals("B", record.getBullets().get(1));
         assertEquals("C", record.getBullets().get(2));
+        assertEquals("--------------------" + System.lineSeparator()
+                        + "No changes made: bullet is already at position 2 in record 1."
+                        + System.lineSeparator()
+                        + "--------------------" + System.lineSeparator(),
+                outputStream.toString());
     }
 
     @Test

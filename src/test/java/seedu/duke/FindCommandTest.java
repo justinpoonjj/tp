@@ -182,7 +182,10 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_nullRecordInList_throwsAssertionError() {
+    public void execute_nullRecordInList_ignoredAndValidRecordsStillShown() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
         RecordList list = new RecordList();
         list.add(null);
         list.add(new Record(
@@ -194,6 +197,15 @@ public class FindCommandTest {
         ));
 
         FindCommand findCommand = new FindCommand("java");
-        assertThrows(AssertionError.class, () -> findCommand.execute(list));
+        findCommand.execute(list);
+
+        String lineSeparator = System.lineSeparator();
+        String expectedOutput = "--------------------" + lineSeparator
+                + "Matching records:" + lineSeparator
+                + "1. [R] Java capstone | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
+                + lineSeparator
+                + "--------------------" + lineSeparator;
+
+        assertEquals(expectedOutput, outputStream.toString());
     }
 }

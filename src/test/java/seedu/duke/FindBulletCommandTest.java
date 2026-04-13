@@ -151,7 +151,10 @@ public class FindBulletCommandTest {
     }
 
     @Test
-    public void execute_nullRecordInList_throwsAssertionError() throws ResumakeException {
+    public void execute_nullRecordInList_ignoredAndValidRecordsStillShown() throws ResumakeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
         RecordList list = new RecordList();
         list.add(null);
 
@@ -167,7 +170,15 @@ public class FindBulletCommandTest {
         list.add(record);
 
         FindBulletCommand command = new FindBulletCommand("persistent");
-        assertThrows(AssertionError.class, () -> command.execute(list));
+        command.execute(list);
+
+        String lineSeparator = System.lineSeparator();
+        String expectedOutput = "1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
+                + lineSeparator
+                + "Bullets:" + lineSeparator
+                + "  2. Implemented persistent storage with file IO" + lineSeparator;
+
+        assertEquals(expectedOutput, outputStream.toString());
     }
 
     @Test
