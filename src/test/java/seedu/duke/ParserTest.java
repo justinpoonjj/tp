@@ -20,6 +20,7 @@ import seedu.duke.commands.Command;
 import seedu.duke.commands.ExitCommand;
 import seedu.duke.commands.FindCommand;
 import seedu.duke.commands.FindBulletCommand;
+import seedu.duke.commands.HelpCommand;
 import seedu.duke.commands.EditCommand;
 import seedu.duke.exceptions.ResumakeException;
 import seedu.duke.recordtype.Record;
@@ -85,6 +86,12 @@ public class ParserTest {
     @Test
     public void parse_findBulletWithoutKeyword_throwExceptions() throws ResumakeException{
         assertThrows(ResumakeException.class, () -> Parser.parse("findbullet"));
+    }
+
+    @Test
+    public void parse_helpInput_returnsHelpCommand() throws ResumakeException {
+        Command command = Parser.parse("help");
+        assertInstanceOf(HelpCommand.class, command);
     }
 
     @Test

@@ -128,6 +128,7 @@ Previously, multiple components created their own UI instances. This increased c
 
 ### Contributions beyond the project team
 
+- Conducted PE-D for another team and reported a high number of actionable bugs (21), then followed up with peer input to clarify impact and improve fixability.
 - Reviewed teammate code and shared feedback on robustness, parser flow, and command behavior consistency.
 - Helped identify edge cases around invalid inputs and storage parsing so issues could be fixed earlier.
 - Participated in team debugging discussions to unblock integration and testing.

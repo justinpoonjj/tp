@@ -41,6 +41,7 @@ Assumed user skill level:
 
 ## Quick Navigation
 
+- [help](#viewing-available-commands--help)
 - [list](#viewing-records--list)
 - [project](#adding-a-project--project)
 - [experience](#adding-an-experience--experience)
@@ -71,6 +72,32 @@ Assumed user skill level:
 > - For `project`, `experience`, and `cca`, fields must appear in this order: `/role`, `/tech`, `/from`, `/to`.
 > - For `list TYPE`, valid values are uppercase `E`, `C`, `P`.
 > - After command execution, ResuMake writes to storage and prints `Records saved to file.`
+
+---
+
+### Viewing available commands : `help`
+
+Shows all available commands with their formats and short descriptions.
+
+Format:
+`help`
+
+Example:
+```text
+help
+```
+
+Expected output (example):
+```text
+--------------------
+Available commands:
+help - Show all available commands.
+list [TYPE] - List records; TYPE can be E, C, or P.
+find KEYWORD - Find records by keyword.
+...
+--------------------
+Records saved to file.
+```
 
 ---
 
@@ -583,6 +610,7 @@ Records saved to file.
 
 | Command | Format |
 |---|---|
+| `help` | `help` |
 | `list` | `list` or `list TYPE` |
 | `project` | `project TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM` |
 | `experience` | `experience TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM` |

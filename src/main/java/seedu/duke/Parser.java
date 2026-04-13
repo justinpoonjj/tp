@@ -18,6 +18,7 @@ import seedu.duke.commands.DeleteCommand;
 import seedu.duke.commands.ExitCommand;
 import seedu.duke.commands.FindCommand;
 import seedu.duke.commands.FindBulletCommand;
+import seedu.duke.commands.HelpCommand;
 import seedu.duke.commands.ListCommand;
 import seedu.duke.commands.ShowCommand;
 import seedu.duke.commands.EditCommand;
@@ -305,6 +306,10 @@ public class Parser {
             } else {
                 return new ListCommand(split[1], effectiveUi);
             }
+
+        case "help":
+            logger.info("Help command detected");
+            return new HelpCommand(effectiveUi);
 
         case "project":
             if (split.length < 2) {
