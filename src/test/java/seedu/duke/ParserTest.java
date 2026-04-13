@@ -52,7 +52,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_mixedCaseByeInput_returnsExitCommand() throws ResumakeException{
+    public void parse_mixedCaseByeInput_returnsExitCommand() throws ResumakeException {
         Command command = Parser.parse("ByE");
         assertInstanceOf(ExitCommand.class, command);
     }
@@ -84,7 +84,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_findBulletWithoutKeyword_throwExceptions() throws ResumakeException{
+    public void parse_findBulletWithoutKeyword_throwExceptions() throws ResumakeException {
         assertThrows(ResumakeException.class, () -> Parser.parse("findbullet"));
     }
 
@@ -92,6 +92,11 @@ public class ParserTest {
     public void parse_helpInput_returnsHelpCommand() throws ResumakeException {
         Command command = Parser.parse("help");
         assertInstanceOf(HelpCommand.class, command);
+    }
+
+    @Test
+    public void parse_helpWithExtraArgument_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("help extra"));
     }
 
     @Test
@@ -103,8 +108,7 @@ public class ParserTest {
     public void parse_validProjectInput() throws Exception {
         provideInput("n");
         Command command = Parser.parse(
-                "project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03"
-        );
+                "project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03");
 
         assertInstanceOf(AddCommand.class, command);
 
@@ -122,8 +126,7 @@ public class ParserTest {
     public void parse_validExperienceInput() throws Exception {
         provideInput("n");
         Command command = Parser.parse(
-                "experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02"
-        );
+                "experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02");
 
         assertInstanceOf(AddCommand.class, command);
 
@@ -141,8 +144,7 @@ public class ParserTest {
     public void parse_validCcaInput() throws Exception {
         provideInput("n");
         Command command = Parser.parse(
-                "cca Tennis /role Captain /tech nil /from 2025-01 /to 2026-01"
-        );
+                "cca Tennis /role Captain /tech nil /from 2025-01 /to 2026-01");
 
         assertInstanceOf(AddCommand.class, command);
 
@@ -179,8 +181,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         list.add(record);
 
         command.execute(list);
@@ -193,7 +194,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_editRoleOnly_returnsEditCommandAndEditsRole() throws Exception{
+    public void parse_editRoleOnly_returnsEditCommandAndEditsRole() throws Exception {
         Command command = Parser.parse("edit 1 /role Team Lead");
         assertInstanceOf(EditCommand.class, command);
 
@@ -203,8 +204,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         list.add(record);
 
         command.execute(list);
@@ -225,8 +225,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         list.add(record);
 
         command.execute(list);
@@ -235,7 +234,7 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_editDatesOnly_returnsEditCommandAndEditsDates() throws Exception{
+    public void parse_editDatesOnly_returnsEditCommandAndEditsDates() throws Exception {
         Command command = Parser.parse("edit 1 /from 2025-12 /to 2026-04");
         assertInstanceOf(EditCommand.class, command);
 
@@ -245,8 +244,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         list.add(record);
 
         command.execute(list);
@@ -258,8 +256,7 @@ public class ParserTest {
     @Test
     public void parse_editMultipleFields_returnsEditCommandAndEditsAllProvidedFields() throws Exception {
         Command command = Parser.parse(
-                "edit 1 New Project Title /role Team Lead /tech JavaFX /from 2025-11 /to 2026-05"
-        );
+                "edit 1 New Project Title /role Team Lead /tech JavaFX /from 2025-11 /to 2026-05");
         assertInstanceOf(EditCommand.class, command);
 
         RecordList list = new RecordList();
@@ -268,8 +265,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         list.add(record);
 
         command.execute(list);
@@ -315,8 +311,7 @@ public class ParserTest {
                 "Developer",
                 "Java",
                 YearMonth.parse("2026-01"),
-                YearMonth.parse("2026-03")
-        );
+                YearMonth.parse("2026-03"));
         record.addBullet("A");
         record.addBullet("B");
         record.addBullet("C");
@@ -421,15 +416,65 @@ public class ParserTest {
     }
 
     @Test
-    public void parse_editbulletBlankNewBullet_returnsEditBulletCommand() throws ResumakeException {
-        Command command = Parser.parse("editbullet 1 1 /   ");
-        assertInstanceOf(EditBulletCommand.class, command);
+    public void parse_editbulletBlankNewBullet_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 1 /   "));
     }
 
     @Test
     public void parse_addbulletMissingBulletText_throwsException() throws ResumakeException {
-        ResumakeException exception = assertThrows(ResumakeException.class, () ->
-                Parser.parse("addbullet 1 /"));
-        assertEquals("Bullet cannot be blank.", exception.getMessage());
+        ResumakeException exception = assertThrows(ResumakeException.class, () -> Parser.parse("addbullet 1 /"));
+        assertEquals("Bullet text cannot be blank.", exception.getMessage());
+    }
+
+    @Test
+    public void parse_editZeroIndex_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("edit 0 new title"));
+    }
+
+    @Test
+    public void parse_editNegativeIndex_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("edit -1 new title"));
+    }
+
+    @Test
+    public void parse_editOnlySpaces_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("edit 1      "));
+    }
+
+    @Test
+    public void parse_addbulletNegativeIndex_throwsException() {
+        assertThrows(ResumakeException.class, () -> Parser.parse("addbullet -1 / test bullet"));
+    }
+
+    @Test
+    public void parse_editbulletZeroRecordIndex_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 0 1 / updated bullet"));
+    }
+
+    @Test
+    public void parse_editbulletNegativeRecordIndex_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet -1 1 / updated bullet"));
+    }
+
+    @Test
+    public void parse_editbulletZeroBulletIndex_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 0 / updated bullet"));
+    }
+
+    @Test
+    public void parse_editbulletNegativeBulletIndex_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 -1 / updated bullet"));
+    }
+
+    @Test
+    public void parse_editWithLargeIndex_succeeds() throws ResumakeException {
+        Command command = Parser.parse("edit 999999 new title");
+        assertInstanceOf(EditCommand.class, command);
+    }
+
+    @Test
+    public void parse_addbulletValidInput_succeeds() throws ResumakeException {
+        Command command = Parser.parse("addbullet 1 / test bullet point");
+        assertInstanceOf(AddBulletCommand.class, command);
     }
 }

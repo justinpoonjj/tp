@@ -47,6 +47,7 @@ public class Resumake {
         boolean isExit = false;
         while (!isExit) {
             try {
+                ui.showPrompt();
                 String fullCommand = ui.readCommand();
                 Command c = Parser.parse(fullCommand, ui);
                 if (c == null) {
