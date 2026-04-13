@@ -86,6 +86,7 @@ Assumed user skill level:
 > - Record and bullet indices are 1-based in user input.
 > - Date format is `yyyy-MM`.
 > - For `project`, `experience`, and `cca`, fields must appear in this order: `/role`, `/tech`, `/from`, `/to`.
+> - After adding a `project`, `experience`, or `cca`, ResuMake asks whether you want to add bullet points immediately.
 > - For `list TYPE`, valid values are uppercase `E`, `C`, `P`.
 > - ResuMake auto-saves to `records.txt` after command execution.
 
@@ -148,13 +149,34 @@ Adds a new project record.
 Format:
 `project TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
 
+After the project is added, ResuMake asks whether you want to add bullet points immediately.
+
+- Enter `y` to add bullets one by one.
+- Enter `esc` to stop adding bullets.
+- Enter `n` to skip bullet entry.
+
 Example:
 ```text
 project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03
 ```
 
-Expected output:
+Example interaction if you skip bullet entry:
 ```text
+Do you want to add bullet points? (y/n)
+n
+--------------------
+[P] Capo CLI added
+--------------------
+```
+
+Example interaction if you add bullets:
+```text
+Do you want to add bullet points? (y/n)
+y
+Enter bullet points one by one. Type "esc" to stop
+Implemented persistent storage with file IO
+Bullet added
+esc
 --------------------
 [P] Capo CLI added
 --------------------
@@ -169,13 +191,21 @@ Adds a new experience record.
 Format:
 `experience TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
 
+After the experience is added, ResuMake asks whether you want to add bullet points immediately.
+
+- Enter `y` to add bullets one by one.
+- Enter `esc` to stop adding bullets.
+- Enter `n` to skip bullet entry.
+
 Example:
 ```text
 experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02
 ```
 
-Expected output:
+Example interaction if you skip bullet entry:
 ```text
+Do you want to add bullet points? (y/n)
+n
 --------------------
 [E] Google added
 --------------------
@@ -190,13 +220,21 @@ Adds a new CCA record.
 Format:
 `cca TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
 
+After the CCA is added, ResuMake asks whether you want to add bullet points immediately.
+
+- Enter `y` to add bullets one by one.
+- Enter `esc` to stop adding bullets.
+- Enter `n` to skip bullet entry.
+
 Example:
 ```text
 cca NUS Hackers /role Core Member /tech Python /from 2025-01 /to 2026-01
 ```
 
-Expected output:
+Example interaction if you skip bullet entry:
 ```text
+Do you want to add bullet points? (y/n)
+n
 --------------------
 [C] NUS Hackers added
 --------------------
@@ -230,88 +268,6 @@ If no bullets exist, it prints:
   (no bullets)
 ```
 
----
-
-### Adding a project : `project`
-
-Adds a new project record.
-
-Format:
-`project TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
-
-Example:
-```text
-project Capo CLI /role Developer /tech Java /from 2026-01 /to 2026-03
-```
-
-Expected output:
-```text
---------------------
-[P] Capo CLI added
---------------------
-```
-
----
-
-### Adding an experience : `experience`
-
-Adds a new experience record.
-
-Format:
-`experience TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
-
-Example:
-```text
-experience Google /role SWE Intern /tech JavaScript /from 2025-12 /to 2026-02
-```
-
-Expected output:
-```text
---------------------
-[E] Google added
---------------------
-```
-
----
-
-### Adding a CCA : `cca`
-
-Adds a new CCA record.
-
-Format:
-`cca TITLE /role ROLE /tech TECH /from YYYY-MM /to YYYY-MM`
-
-Example:
-```text
-cca NUS Hackers /role Core Member /tech Python /from 2025-01 /to 2026-01
-```
-
-Expected output:
-```text
---------------------
-[C] NUS Hackers added
---------------------
-```
-
----
-### Adding a bullet : `addbullet`
-
-Adds a bullet to a record.
-
-Format:
-`addbullet RECORD_INDEX / BULLET_TEXT`
-
-Example:
-```text
-addbullet 1 / Implemented persistent storage with file IO
-```
-
-Expected output:
-```text
---------------------
-Added bullet to: Capo CLI
---------------------
-```
 ---
 
 ### Finding records by keyword : `find`
