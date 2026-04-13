@@ -78,6 +78,37 @@ public class FindBulletCommandTest {
     }
 
     @Test
+    public void execute_multipleMatchingBullets_printsOriginalBulletIndices() throws ResumakeException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        RecordList list = new RecordList();
+        Record record = new Project(
+                "Capo CLI",
+                "Developer",
+                "Java",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        );
+        record.addBullet("foo");
+        record.addBullet("bar");
+        record.addBullet("foo2");
+        list.add(record);
+
+        FindBulletCommand command = new FindBulletCommand("foo");
+        command.execute(list);
+
+        String lineSeparator = System.lineSeparator();
+        String expectedOutput = "1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
+                + lineSeparator
+                + "Bullets:" + lineSeparator
+                + "  1. foo" + lineSeparator
+                + "  3. foo2" + lineSeparator;
+
+        assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    @Test
     public void execute_noMatchingBullets_printsNoMatchMessage() throws ResumakeException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -163,7 +194,7 @@ public class FindBulletCommandTest {
         String expectedOutput = "1. [P] Capo CLI | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"
                 + lineSeparator
                 + "Bullets:" + lineSeparator
-                + "  1. Implemented persistent storage with file IO" + lineSeparator;
+                + "  2. Implemented persistent storage with file IO" + lineSeparator;
 
         assertEquals(expectedOutput, outputStream.toString());
     }

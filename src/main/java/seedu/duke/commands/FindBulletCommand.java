@@ -87,7 +87,8 @@ public class FindBulletCommand extends Command {
                 int matchCount = 0;
                 StringBuilder bulletOutput = new StringBuilder();
 
-                for (String bullet : bullets) {
+                for (int i = 0; i < bullets.size(); i++) {
+                    String bullet = bullets.get(i);
                     if (bullet == null) {
                         continue;
                     }
@@ -95,7 +96,7 @@ public class FindBulletCommand extends Command {
                     if (bullet.toLowerCase().contains(lowerKeyword)) {
                         matchCount++;
                         bulletOutput.append("  ")
-                                .append(matchCount)
+                                .append(i + 1)
                                 .append(". ")
                                 .append(bullet)
                                 .append(System.lineSeparator());
