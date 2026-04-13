@@ -30,12 +30,12 @@ public class FindBulletCommand extends Command {
 
     public FindBulletCommand(String keyword, Ui ui) {
         if (keyword == null) {
-            throw new IllegalArgumentException("Keyword cannot be null");
+            throw new IllegalArgumentException("Keyword cannot be null.");
         }
 
         String trimmedKeyword = keyword.trim();
         if (trimmedKeyword.isEmpty()) {
-            throw new IllegalArgumentException("Keyword cannot be blank");
+            throw new IllegalArgumentException("Keyword cannot be blank.");
         }
 
         this.keyword = trimmedKeyword;

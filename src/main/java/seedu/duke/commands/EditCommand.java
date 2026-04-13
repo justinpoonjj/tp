@@ -166,7 +166,7 @@ public class EditCommand extends Command {
         } catch (IndexOutOfBoundsException e) {
             logger.warning(() -> "EditCommand failed: invalid record index " + index);
             ui.showLine();
-            ui.showError("Invalid record index");
+            ui.showError("Invalid record index.");
             ui.showLine();
 
         } catch (IllegalArgumentException e) {

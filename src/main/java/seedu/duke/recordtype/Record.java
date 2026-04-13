@@ -173,7 +173,7 @@ public class Record {
         String trimmedBullet = bullet.trim();
         if (bullets.contains(trimmedBullet)) {
             logger.warning("addBullet failed: duplicate bullet");
-            throw new ResumakeException("Duplicate bullet: an identical bullet already exists");
+            throw new ResumakeException("Duplicate bullet: an identical bullet already exists.");
         }
 
         bullets.add(trimmedBullet);

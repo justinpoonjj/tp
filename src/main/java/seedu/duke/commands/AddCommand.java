@@ -33,10 +33,10 @@ public class AddCommand extends Command {
      */
     public AddCommand(Record r, Ui ui) throws ResumakeException {
         if (r == null) {
-            throw new ResumakeException("Record cannot be null");
+            throw new ResumakeException("Record cannot be null.");
         }
         if (r.getTitle() == null || r.getTitle().trim().isEmpty()) {
-            throw new ResumakeException("Record title cannot be empty");
+            throw new ResumakeException("Record title cannot be empty.");
         }
         this.r = r;
         this.ui = ui == null ? new Ui() : ui;
@@ -53,7 +53,7 @@ public class AddCommand extends Command {
         logger.info("Executing AddCommand");
 
         if (list == null) {
-            throw new ResumakeException("Record list cannot be null");
+            throw new ResumakeException("Record list cannot be null.");
         }
 
         //Assert preconditions
@@ -64,7 +64,7 @@ public class AddCommand extends Command {
 
         if (list.contains(r)) {
             logger.warning("Duplicate record detected: " + r.getTitle());
-            throw new ResumakeException("Duplicate record: an identical record already exists");
+            throw new ResumakeException("Duplicate record: an identical record already exists.");
         }
 
         logger.fine("Adding record: " + r.getTitle());
@@ -73,32 +73,41 @@ public class AddCommand extends Command {
 
         logger.info("Record added successfully: "+ r.getTitle());
 
-        ui.showMessage("Do you want to add bullet points? (y/n)");
-        String answer = ui.readCommand().trim();
+        while(true) {
+            ui.showMessage("Do you want to add bullet points? (y/n)");
+            String answer = ui.readCommand().trim();
 
-        if (answer.equalsIgnoreCase("y")) {
-            ui.showMessage("Enter bullet points one by one. Type \"esc\" to stop");
+            if (answer.equalsIgnoreCase("y")) {
+                ui.showMessage("Enter bullet points one by one. Type \"esc\" to stop");
 
-            while (true) {
-                String bullet = ui.readCommand().trim();
+                while (true) {
+                    String bullet = ui.readCommand().trim();
 
-                if (bullet.equalsIgnoreCase("esc")) {
-                    break;
+                    if (bullet.equalsIgnoreCase("esc")) {
+                        break;
+                    }
+
+                    if (bullet.isBlank()) {
+                        ui.showMessage("Bullet cannot be blank.");
+                        continue;
+                    }
+                    try {
+                        r.addBullet(bullet);
+                        ui.showMessage("Bullet added.");
+                    } catch (ResumakeException e) {
+                        ui.showMessage(e.getMessage());
+                    }
                 }
-
-                if (bullet.isBlank()) {
-                    ui.showMessage("Bullet cannot be blank");
-                    continue;
-                }
-                try {
-                    r.addBullet(bullet);
-                    ui.showMessage("Bullet added");
-                } catch (ResumakeException e) {
-                    ui.showMessage(e.getMessage());
-                }
-
+                break;
             }
+
+            if (answer.equalsIgnoreCase("n")) {
+                break;
+            }
+
+            ui.showMessage("Please enter y or n.");
         }
+
 
         ui.showLine();
         System.out.println("[" + r.getRecordType() + "] "

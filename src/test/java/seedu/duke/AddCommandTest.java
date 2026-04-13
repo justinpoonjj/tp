@@ -57,7 +57,7 @@ public class AddCommandTest {
     @Test
     public void constructor_nullRecord_throwsException() {
         ResumakeException e = assertThrows(ResumakeException.class, () -> new AddCommand(null));
-        assertEquals("Record cannot be null", e.getMessage());
+        assertEquals("Record cannot be null.", e.getMessage());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class AddCommandTest {
         Record record = new EmptyTitleRecord();
 
         ResumakeException e = assertThrows(ResumakeException.class, () -> new AddCommand(record));
-        assertEquals("Record title cannot be empty", e.getMessage());
+        assertEquals("Record title cannot be empty.", e.getMessage());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class AddCommandTest {
         AddCommand cmd = new AddCommand(record);
 
         ResumakeException e = assertThrows(ResumakeException.class, () -> cmd.execute(null));
-        assertEquals("Record list cannot be null", e.getMessage());
+        assertEquals("Record list cannot be null.", e.getMessage());
     }
 
     @Test

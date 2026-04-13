@@ -67,11 +67,11 @@ public class User {
         case "number":
             try {
                 if (value == null || value.isBlank()) {
-                    throw new NumberFormatException("Number cannot be blank");
+                    throw new NumberFormatException("Number cannot be blank.");
                 }
                 int parsedNumber = Integer.parseInt(value.trim());
                 if (parsedNumber <= 0) {
-                    throw new NumberFormatException("Number must be positive");
+                    throw new NumberFormatException("Number must be positive.");
                 }
                 this.number = parsedNumber;
             } catch (NumberFormatException e) {
@@ -208,7 +208,7 @@ public class User {
             try {
                 int number = Integer.parseInt(numberInput);
                 if (number <= 0) {
-                    throw new NumberFormatException("Number must be positive");
+                    throw new NumberFormatException("Number must be positive.");
                 }
                 return number;
             } catch (NumberFormatException e) {
