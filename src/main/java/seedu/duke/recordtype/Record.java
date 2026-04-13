@@ -284,8 +284,7 @@ public class Record {
                 && Objects.equals(tech, other.tech)
                 && Objects.equals(from, other.from)
                 && Objects.equals(to, other.to)
-                && Objects.equals(recordType, other.recordType)
-                && Objects.equals(bullets, other.bullets);
+                && Objects.equals(recordType, other.recordType);
     }
 
     @Override
