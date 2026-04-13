@@ -58,6 +58,22 @@ This feature lets users prioritize stronger achievements without rewriting bulle
 
 ---
 
+## New Feature: Help Command
+
+**What it does:**  
+Adds a `help` command that displays the list of available commands with their formats and short descriptions.
+
+**Justification:**  
+New users may not remember command syntax immediately.  
+This feature improves discoverability and reduces friction by showing a quick in-app command reference.
+
+**Highlights:**
+- Implemented `help` command parsing and execution flow.
+- Added user-facing output covering all supported commands and brief usage descriptions.
+- Updated tests and User Guide to document and verify the new command behavior.
+
+---
+
 ## Enhancement: Refactor Ui Usage to Reduce Coupling
 
 **What it does:**  
