@@ -24,6 +24,13 @@ public class AddCommand extends Command {
         this(r, new Ui());
     }
 
+    /**
+     * Creates an AddCommand with the specified record and UI.
+     *
+     * @param r The record to be added.
+     * @param ui The UI used to show messages and read bullet prompts.
+     * @throws ResumakeException If the record is null or has an empty title.
+     */
     public AddCommand(Record r, Ui ui) throws ResumakeException {
         if (r == null) {
             throw new ResumakeException("Record cannot be null");
