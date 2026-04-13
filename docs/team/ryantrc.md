@@ -2,10 +2,10 @@
 
 Project: Resumake CLI
 
-Resumake CLI is a desktop command-line application designed to
-help users manage and structure resume content such as projects,
-experiences, and activities. The user interacts with it using a CLI,
-and it is written in Java.
+Resumake CLI is a desktop command line application designed for university 
+students or recently graduated students to design and structure their resume
+on the spot. Users can add projects, experiences or CCAs, and can also add 
+bullets to their records.
 
 Given below are my contributions to the project.
 
