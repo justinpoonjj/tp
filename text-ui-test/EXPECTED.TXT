@@ -1,9 +1,6 @@
 --------------------
 Welcome to ResuMake
 --------------------
-Welcome! What is your name?
-Next, what is your number?
-Finally, what is your email?
 Loaded records from file.
 --------------------
 --------------------
