@@ -215,9 +215,9 @@ public class Storage {
             }
 
             StringBuilder line = new StringBuilder();
-            line.append(keyword).append(" ").append(record.getTitle())
-                    .append(" /role ").append(record.getRole())
-                    .append(" /tech ").append(record.getTech())
+            line.append(keyword).append(" ").append(encodeFieldForStorage(record.getTitle()))
+                    .append(" /role ").append(encodeFieldForStorage(record.getRole()))
+                    .append(" /tech ").append(encodeFieldForStorage(record.getTech()))
                     .append(" /from ").append(record.getFrom())
                     .append(" /to ").append(record.getTo());
 
@@ -287,9 +287,9 @@ public class Storage {
         }
 
         try {
-            String title = args.substring(0, roleIndex).trim();
-            String role = args.substring(roleIndex + 5, techIndex).trim();
-            String tech = args.substring(techIndex + 5, fromIndex).trim();
+            String title = decodeFieldFromStorage(args.substring(0, roleIndex).trim());
+            String role = decodeFieldFromStorage(args.substring(roleIndex + 5, techIndex).trim());
+            String tech = decodeFieldFromStorage(args.substring(techIndex + 5, fromIndex).trim());
             String fromPart = args.substring(fromIndex + 5, toIndex).trim();
 
             String toPart;
@@ -375,6 +375,29 @@ public class Storage {
     private String encodeBulletForStorage(String bullet) {
         String encoded = Base64.getEncoder().encodeToString(bullet.getBytes(StandardCharsets.UTF_8));
         return "b64:" + encoded;
+    }
+
+    private String encodeFieldForStorage(String field) {
+        String encoded = Base64.getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(field.getBytes(StandardCharsets.UTF_8));
+        return "b64u:" + encoded;
+    }
+
+    private String decodeFieldFromStorage(String storedField) {
+        if (storedField.startsWith("b64u:")) {
+            String encoded = storedField.substring(5);
+            byte[] decoded = Base64.getUrlDecoder().decode(encoded);
+            return new String(decoded, StandardCharsets.UTF_8);
+        }
+
+        if (storedField.startsWith("b64:")) {
+            String encoded = storedField.substring(4);
+            byte[] decoded = Base64.getDecoder().decode(encoded);
+            return new String(decoded, StandardCharsets.UTF_8);
+        }
+
+        return storedField;
     }
 
     private String decodeBulletFromStorage(String storedBullet) {

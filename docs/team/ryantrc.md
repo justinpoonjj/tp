@@ -14,15 +14,15 @@ Given below are my contributions to the project.
 ## New Feature: Added EditCommand
 
 **What it does:**
-EditCommmand allows users to modify existing records in the list by specifying the record index
-and the fields to be updated. The user an update one or mutliple fields
+EditCommand allows users to modify existing records in the list by specifying the record index
+and the fields to be updated. The user can update one or multiple fields
 at a time (e.g., title, role, tech, date range) in a single command without affecting other fields.
 
 **Justification:** This feature significantly improves usability of the product by allowing users
 to change fields that they entered previously without deleting or recreating records.
 
 In real world usage, resume content is frequently revised depending on the role the user is applying for.
-So, providing an efficient way for user to edit records is directly essential for maintaining accuracy
+So, providing an efficient way for users to edit records is directly essential for maintaining accuracy
 and convenience.
 
 **Highlights:**
@@ -33,7 +33,7 @@ and convenience.
 - Ensured data consistency by validating date range. (e.g., preventing end date from being earlier than start date)
 - Adopted a fail-safe design, where no changes are applied if validation fails.
 - Added comprehensive unit tests to cover valid edits, invalid inputs, and edge cases.
-- Improved maintainability by introducing structured field parsing (ParsedFields) to simplify argument handling.
+- Improved maintainability by centralizing edit-field parsing in Parser.java.
 
 ---
 
@@ -48,24 +48,24 @@ This feature enables users to directly edit individual bullet points without nee
 **Highlights:**
 
 - Supports precise editing of individual bullet points using record and bullet indices.
-- Maintains list integrity, ensuring no change in bullet count after editing
+- Maintains list integrity, ensuring no change in bullet count after editing.
 - Includes validation to prevent editing with invalid indices or blank bullet content.
-- Handles errors by throwing ResumakeException for invalid operations.
-- Includes comprehensive test coverage for success cases, invalid indices and edge cases.
+- Handles invalid edit operations through Parser and ResumakeException-based command errors.
+- Includes comprehensive test coverage for success cases, invalid indices, and edge cases.
 
 ---
 
-## New Feature: ListBullets
+## Enhancement: Show Bullets in ShowCommand
 
-**What it does**: Displays all bullet points associated with a specific record, providing users with a comprehensive view of achievements and responsibilities within a single resume entry.
+**What it does**: Displays all bullet points associated with a specific record through ShowCommand, providing users with a comprehensive view of achievements and responsibilities within a single resume entry.
 
 **Justification**: While editing records individually is useful, having a feature to view all bullets associated with a record improves the overall usability and allows users to review their complete resume content at a glance.
 
 **Highlights**:
 
-- Seamlessly integrated bullet display into the ShowCommand
-- Allows users to view structured resume content with all related bullets
-- Built to be extensible for future enhancements
+- Seamlessly integrated bullet display into ShowCommand.
+- Allows users to view structured resume content with all related bullets.
+- Added supporting tests for showing records with bullets.
 
 ---
 
@@ -79,8 +79,8 @@ This feature enables users to directly edit individual bullet points without nee
 
 - Managed feature development by updating existing classes and methods to integrate new features
   well with existing classes like Parser.java.
-- Contributed by maintaining gradle checks across multiple pull requests.
-- Maintained javadoc across methods in EditCommand and EditBulletCommand, as well as in related classes.
+- Contributed by resolving Gradle/checkstyle issues across multiple pull requests.
+- Maintained Javadocs across methods in EditCommand and EditBulletCommand, as well as in related classes.
 
 ---
 
@@ -121,4 +121,4 @@ This feature enables users to directly edit individual bullet points without nee
 ## Tools:
 
 - Used Gradle extensively to run test, check, checkstyleMain and checkstyleTest during development and debugging.
-- Improved quality of codebase through systematic use of assertions, logging and Junit tests.
+- Improved quality of codebase through systematic use of assertions, logging and JUnit tests.

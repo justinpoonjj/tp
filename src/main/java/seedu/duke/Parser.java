@@ -459,6 +459,8 @@ public class Parser {
                 return new EditBulletCommand(recordIndex, bulletIndex, newBullet, effectiveUi);
             } catch (NumberFormatException e) {
                 throw new ResumakeException("Please follow the correct format.");
+            } catch (IllegalArgumentException e) {
+                throw new ResumakeException(e.getMessage());
             }
 
         case "sort":
@@ -576,6 +578,10 @@ public class Parser {
         int toIndex = -1;
 
         Matcher matcher = FIELD_TOKEN_PATTERN.matcher(args);
+        boolean roleSeen = false;
+        boolean techSeen = false;
+        boolean fromSeen = false;
+        boolean toSeen = false;
 
         while (matcher.find()) {
             String fieldToken = matcher.group(1);
@@ -620,6 +626,16 @@ public class Parser {
         }
 
         return new FieldIndices(roleIndex, techIndex, fromIndex, toIndex);
+    }
+
+    private static int findFieldIndex(String args, String field) {
+        Matcher matcher = FIELD_TOKEN_PATTERN.matcher(args);
+        while (matcher.find()) {
+            if (matcher.group(1).equals(field)) {
+                return matcher.start(1);
+            }
+        }
+        return -1;
     }
 
     /**

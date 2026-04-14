@@ -130,13 +130,14 @@ ResuMake stores data in a flat text file (`records.txt`) with:
 
 - First line reserved for user profile: `USER|name|number|email`
 - Subsequent lines for records in command-like format, e.g.
-  `project Title /role Role /tech Tech /from 2026-01 /to 2026-03 /bullets b64:QnVpbHQgcGFyc2Vy ;; b64:QWRkZWQgdGVzdHM=`
+  `project b64u:VGl0bGU /role b64u:Um9sZQ /tech b64u:SmF2YQ /from 2026-01 /to 2026-03 /bullets b64:QnVpbHQgcGFyc2Vy ;; b64:QWRkZWQgdGVzdHM=`
 
 Key behaviors:
 
 - `loadFromFile` creates the directory/file if missing.
 - Invalid record lines are skipped instead of crashing load.
 - User line parsing uses `split("\\|", 4)` to preserve the full email field if delimiters appear inside the email text.
+- Title, role, and tech fields are serialized with URL-safe `b64u:` Base64 encoding.
 - Bullets are serialized with `b64:` Base64 encoding in saved output and decoded on load.
 - `saveToFile` serializes all in-memory data and compares against existing file content.
 - If content is unchanged, file write and save confirmation message are skipped.

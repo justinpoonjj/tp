@@ -107,4 +107,21 @@ public class ResumakeTest {
         assertTrue(output.contains("1. [P] Portfolio | role: Developer | tech: Java | from: 2026-01 | to: 2026-03"));
         assertTrue(output.contains("bye"));
     }
+
+    @Test
+    public void run_invalidEditBulletIndex_continuesToNextCommand() {
+        String userInput = "editbullet 0 1 / updated bullet" + System.lineSeparator()
+                + "bye" + System.lineSeparator();
+        System.setIn(new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8)));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        Resumake app = new Resumake();
+        app.run();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Error: Record index must be positive (1-based)"));
+        assertTrue(output.contains("bye"));
+    }
 }

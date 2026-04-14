@@ -467,7 +467,7 @@ public class ParserTest {
 
     @Test
     public void parse_editbulletBlankNewBullet_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 1 /   "));
+        assertThrows(ResumakeException.class, () -> Parser.parse("editbullet 1 1 /   "));
     }
 
     @Test
@@ -498,22 +498,22 @@ public class ParserTest {
 
     @Test
     public void parse_editbulletZeroRecordIndex_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 0 1 / updated bullet"));
+        assertThrows(ResumakeException.class, () -> Parser.parse("editbullet 0 1 / updated bullet"));
     }
 
     @Test
     public void parse_editbulletNegativeRecordIndex_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet -1 1 / updated bullet"));
+        assertThrows(ResumakeException.class, () -> Parser.parse("editbullet -1 1 / updated bullet"));
     }
 
     @Test
     public void parse_editbulletZeroBulletIndex_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 0 / updated bullet"));
+        assertThrows(ResumakeException.class, () -> Parser.parse("editbullet 1 0 / updated bullet"));
     }
 
     @Test
     public void parse_editbulletNegativeBulletIndex_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> Parser.parse("editbullet 1 -1 / updated bullet"));
+        assertThrows(ResumakeException.class, () -> Parser.parse("editbullet 1 -1 / updated bullet"));
     }
 
     @Test

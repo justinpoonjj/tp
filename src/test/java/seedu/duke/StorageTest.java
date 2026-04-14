@@ -66,9 +66,10 @@ public class StorageTest {
 
         List<String> lines = Files.readAllLines(recordsPath);
         assertEquals("USER|Alex|98765432|alex@example.com", lines.get(0));
-        assertTrue(lines.get(1).startsWith(
-                "project Resume Builder /role Developer /tech Java /from 2026-01 /to 2026-03 /bullets "
-        ));
+        assertTrue(lines.get(1).startsWith("project b64u:"));
+        assertTrue(lines.get(1).contains(" /role b64u:"));
+        assertTrue(lines.get(1).contains(" /tech b64u:"));
+        assertTrue(lines.get(1).contains(" /from 2026-01 /to 2026-03 /bullets "));
         assertTrue(lines.get(1).contains("b64:"));
     }
 
@@ -238,6 +239,29 @@ public class StorageTest {
         assertEquals(1, loaded.getSize());
         assertEquals(1, loaded.getRecord(0).getBullets().size());
         assertEquals("first ;; second", loaded.getRecord(0).getBullets().get(0));
+    }
+
+    @Test
+    public void saveToFile_fieldsWithDelimiterLikeText_roundTripsCorrectly() throws Exception {
+        User.loadFrom("Alex", 98765432, "alex@example.com");
+        Storage storage = new Storage(new SilentUi());
+        RecordList list = new RecordList();
+        Project project = new Project(
+                "Parser /role experiment",
+                "Lead /tech mentor",
+                "Java /from scratch",
+                YearMonth.parse("2026-01"),
+                YearMonth.parse("2026-03")
+        );
+        list.add(project);
+
+        storage.saveToFile(list);
+        RecordList loaded = storage.loadFromFile(Storage.getFilepath());
+
+        assertEquals(1, loaded.getSize());
+        assertEquals("Parser /role experiment", loaded.getRecord(0).getTitle());
+        assertEquals("Lead /tech mentor", loaded.getRecord(0).getRole());
+        assertEquals("Java /from scratch", loaded.getRecord(0).getTech());
     }
 
     private static class UnknownRecordType extends Record {
