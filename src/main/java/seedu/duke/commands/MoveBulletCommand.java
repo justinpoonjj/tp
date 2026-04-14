@@ -65,16 +65,18 @@ public class MoveBulletCommand extends Command {
         Record record = list.getRecord(recordIndex);
         assert record != null : "Record at valid index should not be null";
 
-        if (fromBulletIndex == toBulletIndex) {
-            ui.showLine();
-            ui.showMessage("No changes made: bullet is already at position "
-                    + (fromBulletIndex + 1) + " in record " + (recordIndex + 1) + ".");
-            ui.showLine();
-            logger.info("MoveBulletCommand skipped: source and target indices are the same");
-            return;
-        }
-
         try {
+            if (fromBulletIndex == toBulletIndex) {
+                // Use record.moveBullet to validate bounds even for no-op moves.
+                record.moveBullet(fromBulletIndex, toBulletIndex);
+                ui.showLine();
+                ui.showMessage("No changes made: bullet is already at position "
+                        + (fromBulletIndex + 1) + " in record " + (recordIndex + 1) + ".");
+                ui.showLine();
+                logger.info("MoveBulletCommand skipped: source and target indices are the same");
+                return;
+            }
+
             record.moveBullet(fromBulletIndex, toBulletIndex);
 
             ui.showLine();

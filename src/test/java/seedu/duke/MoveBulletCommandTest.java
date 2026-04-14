@@ -94,6 +94,22 @@ public class MoveBulletCommandTest {
     }
 
     @Test
+    public void execute_moveBulletSameOutOfRangeIndex_throwsInvalidBulletIndex() throws ResumakeException {
+        RecordList list = new RecordList();
+        Record record = createRecordWithThreeBullets();
+        list.add(record);
+
+        MoveBulletCommand command = new MoveBulletCommand(0, 98, 98);
+        ResumakeException ex = assertThrows(ResumakeException.class, () -> command.execute(list));
+        assertEquals("Invalid bullet index.", ex.getMessage());
+
+        assertEquals(3, record.getBullets().size());
+        assertEquals("A", record.getBullets().get(0));
+        assertEquals("B", record.getBullets().get(1));
+        assertEquals("C", record.getBullets().get(2));
+    }
+
+    @Test
     public void execute_invalidRecordIndex_noMutation() throws ResumakeException {
         RecordList list = new RecordList();
         Record record = createRecordWithThreeBullets();
