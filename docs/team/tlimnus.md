@@ -24,15 +24,15 @@ Given below are my contributions to the project.
 
 4. **Sort records (`sort`)** — Sorts all stored records alphabetically by title using a case-insensitive comparator applied directly at the `RecordList` level. All subsequent `list` and `generate` output immediately reflects the new order.
 
-5. **Edit user profile (`edituser`)** — Lets users update name, phone number, or email one field at a time. The field name is validated at construction time so a bad field never reaches execution. Shows the current value before prompting so the user knows what they are replacing.
+5. **Edit user profile (`edituser`)** — Lets users update name, phone number, or email one field at a time. Shows the current value before prompting so the user knows what they are replacing.
 
 6. **User singleton and reference-counted skill tracking (`User`)** — Maintains the user's personal details as a singleton accessible from anywhere without being threaded through every command. Tech skills are reference-counted via `addSkills()` / `removeSkills()`: a skill is only removed once no record references it. Skill strings are normalised by stripping surrounding quotation marks before storage.
 
-7. **Standardised error messages** — Unified invalid-index error text across `DeleteCommand`, `EditBulletCommand`, `MoveBulletCommand`, `EditCommand`, `AddBulletCommand`, and `ShowCommand`. Fixed punctuation inconsistencies in date-range and empty-command errors in `Parser`, `Record`, and `EditCommand`, and unified duplicate blank-bullet messages in `Record`.
+7. **Standardised error messages** — Unified invalid-index error text across `DeleteCommand`, `EditBulletCommand`, `MoveBulletCommand`, `EditCommand`, `AddBulletCommand`, and `ShowCommand`.
 
 8. **Enabled JVM assertions in Gradle** — Added the `-ea` flag to `build.gradle` so `assert` statements are enforced during test runs instead of being silently skipped.
 
-9. **Comprehensive test coverage** — Wrote and expanded tests in `ListCommandTest`, `ShowCommandTest`, `GenerateCommandTest`, `UserTest`, `SortCommandTest`, and `EditUserCommandTest`, covering normal operation, boundary indices, invalid types, empty lists, skill reference-counting, and retry-loop behaviour.
+9. **Comprehensive test coverage** — Wrote and expanded tests in `ListCommandTest`, `ShowCommandTest`, `GenerateCommandTest`, `UserTest`, `SortCommandTest`, and `EditUserCommandTest`.
 
 ### Contributions to the User Guide (UG)
 
